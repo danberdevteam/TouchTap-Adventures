@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "TouchTap Adventure.sln"
+    "dotnet.defaultSolution": "TouchTap-Adventures.sln"
 }
