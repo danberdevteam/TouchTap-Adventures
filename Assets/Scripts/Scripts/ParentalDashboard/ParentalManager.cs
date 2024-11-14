@@ -1,4 +1,5 @@
 using System;
+using PlayFab.ClientModels;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -24,7 +25,15 @@ public class ParentalManager : MonoBehaviour
 
     void Start()
     {
+        if (!UserManager.Instance.IsLoggedIn && PlayerPrefs.HasKey("DisplayName"))
+        {
+            UserManager.Instance.DisplayName = PlayerPrefs.GetString("DisplayName");
+            UserManager.Instance.IsLoggedIn = true; // Make sure to validate this state is correct!
+        }
+
         TitleText.text = UserManager.Instance.DisplayName + "'s Info ";
+        Debug.Log("Display Name: " + UserManager.Instance.DisplayName);
+        // TitleText.text = PlayerPrefs.GetString("userName", usernameInputLogin.text) + "'s Info ";
         for (int i = 0; i < dataCollector.minigameStats.Count; i++)
         {
             String sessionNumber = "Session " + i;

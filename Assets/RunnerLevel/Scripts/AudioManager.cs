@@ -161,4 +161,9 @@ public class AudioManager : MonoBehaviour
         SetMusicToggle(false);
         SetMusicToggle(true);
     }
+
+    public static implicit operator AudioManager(Audio_Manager v)
+    {
+        throw new NotImplementedException();
+    }
 }

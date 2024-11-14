@@ -18,7 +18,8 @@ public class Slider : MonoBehaviour, IDragHandler, IEndDragHandler
 
   void Start()
   {
-
+    GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
+    GetComponent<Image>().color = new Color(GetComponent<Image>().color.r, GetComponent<Image>().color.g, GetComponent<Image>().color.b, 0.6f);
     pathDistance = Vector3.Distance(transform.position, end.position);
     currentDistance = Vector3.Distance(transform.position, end.position);
 

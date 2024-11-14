@@ -18,7 +18,7 @@ public class GraphHandler : MonoBehaviour
 
     public int miniGameNumber;
 
- 
+
 
     void Start()
     {
@@ -43,7 +43,7 @@ public class GraphHandler : MonoBehaviour
             Accuracy.Add(new List<float>());
 
             for (int i = 0; i < minigameStats.Count; i++)
-            { 
+            {
                 if (minigameStats[i].Count >= k + 1)
                 {
                     InCorrectClicks[k].Add(minigameStats[i][k].IncorrectClicks);
@@ -56,7 +56,14 @@ public class GraphHandler : MonoBehaviour
                     }
                     else
                     {
-                        accuracy = minigameStats[i][k].CorrectClicks * 100 / (minigameStats[i][k].CorrectClicks + minigameStats[i][k].IncorrectClicks);
+                        if ((minigameStats[i][k].CorrectClicks + minigameStats[i][k].IncorrectClicks) == 0)
+                        {
+                            accuracy = 0;
+                        }
+                        else
+                        {
+                            accuracy = minigameStats[i][k].CorrectClicks * 100 / (minigameStats[i][k].CorrectClicks + minigameStats[i][k].IncorrectClicks);
+                        }
                     }
                     Accuracy[k].Add(accuracy);
                 }

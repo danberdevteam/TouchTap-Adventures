@@ -19,6 +19,7 @@ public class UserManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        print("Display Name : " + DisplayName);
     }
 
     // public void OnLoginSuccess(LoginResult result)

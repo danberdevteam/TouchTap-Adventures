@@ -1,7 +1,9 @@
 ﻿
 using System.Collections.Generic;
 using MagneticScrollView;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 public class ChangeLetters : MonoBehaviour
 {
     public List<OrderController> letters;
@@ -10,10 +12,11 @@ public class ChangeLetters : MonoBehaviour
 
     public ParticleSystem finishParticleEffect;
 
-    public GameObject Pointer;
+    // public GameObject Pointer;
     public float TimeScale = 0;
     public MagneticScrollRect magneticScrollRect;
-
+    public int NumberOfLettersDone = 0;
+    [SerializeField] Text titleText;
 
     private enum E_Direction
     {
@@ -32,14 +35,14 @@ public class ChangeLetters : MonoBehaviour
     {
         // ChangeUIValues(m_index);
 
-        if (TimeScale > 400)
-        {
-            Pointer.SetActive(true);
-        }
-        else
-        {
-            Pointer.SetActive(false);
-        }
+        // if (TimeScale > 400)
+        // {
+        //     Pointer.SetActive(true);
+        // }
+        // else
+        // {
+        //     Pointer.SetActive(false);
+        // }
     }
     private void onClickChangeSelectedIndex(E_Direction direction)
     {
@@ -93,6 +96,11 @@ public class ChangeLetters : MonoBehaviour
     public void ScrollToNextWord()
     {
         magneticScrollRect.ScrollForward();
+        if (NumberOfLettersDone == 26)
+        {
+            titleText.text = "Well Done";
+
+        }
     }
 
     // public void ShowStars()

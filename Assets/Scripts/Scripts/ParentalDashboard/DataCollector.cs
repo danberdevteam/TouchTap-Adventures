@@ -29,7 +29,9 @@ public class DataCollector : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            LoadAllSessionData();
+            // LoadAllSessionData();
+            // Ensure user is logged in before loading session data
+            EnsureUserLoggedIn();
         }
         else
         {
@@ -85,17 +87,24 @@ public class DataCollector : MonoBehaviour
 
     private void LoadAllSessionData()
     {
+        print("Load Session Data ENter");
         string path = Application.persistentDataPath + "/allSessionsData.json";
         if (File.Exists(path))
         {
+            print("Path Exist");
             string json = File.ReadAllText(path);
             allSessions = JsonUtility.FromJson<AllSessions>(json);
             StartCoroutine(RetrieveUserDataFromPlayFab());
         }
         else
         {
+            print("Not Exist");
+            string json = JsonUtility.ToJson(allSessions, true);
+            File.WriteAllText(Application.persistentDataPath + "/allSessionsData.json", json);
+            StartCoroutine(RetrieveUserDataFromPlayFab());
             allSessions = new AllSessions(); // Initialize if file doesn't exist
         }
+
     }
 
     private void LoadCurrentSession(string sessionId)
@@ -125,6 +134,7 @@ public class DataCollector : MonoBehaviour
     }
     private IEnumerator RetrieveUserDataFromPlayFab()
     {
+        print("AAAA");
         bool dataRetrieved = false;
         string retrievedJson = "";
 
@@ -133,6 +143,7 @@ public class DataCollector : MonoBehaviour
             if (result.Data != null && result.Data.ContainsKey("allSessionsData"))
             {
                 retrievedJson = result.Data["allSessionsData"].Value;
+
                 allSessions = JsonUtility.FromJson<AllSessions>(retrievedJson);
                 Debug.Log("Data retrieved successfully.");
             }
@@ -239,7 +250,15 @@ public class DataCollector : MonoBehaviour
                     }
                     else
                     {
-                        accuracy = miniGameList[i][k].CorrectClicks * 100 / (miniGameList[i][k].CorrectClicks + miniGameList[i][k].IncorrectClicks);
+                        Debug.Log("valueee :- " + (miniGameList[i][k].CorrectClicks + miniGameList[i][k].IncorrectClicks));
+                        if ((miniGameList[i][k].CorrectClicks + miniGameList[i][k].IncorrectClicks) == 0)
+                        {
+                            accuracy = 0;
+                        }
+                        else
+                        {
+                            accuracy = miniGameList[i][k].CorrectClicks * 100 / (miniGameList[i][k].CorrectClicks + miniGameList[i][k].IncorrectClicks);
+                        }
                     }
                     overallScore += accuracy;
                     num++;
@@ -268,6 +287,31 @@ public class DataCollector : MonoBehaviour
             result => Debug.Log("Leaderboard score updated successfully!"),
             error => Debug.LogError("Error updating leaderboard score: " + error.GenerateErrorReport())
         );
+    }
+
+    private void EnsureUserLoggedIn()
+    {
+        if (!PlayFabClientAPI.IsClientLoggedIn())
+        {
+            // Initiate login procedure; on success, call LoadAllSessionData
+            PlayFabClientAPI.LoginWithCustomID(new LoginWithCustomIDRequest
+            {
+                CustomId = SystemInfo.deviceUniqueIdentifier,
+                CreateAccount = true
+            }, result =>
+            {
+                Debug.Log("Logged in successfully");
+                LoadAllSessionData();
+            }, error =>
+            {
+                Debug.LogError("Error logging in: " + error.ErrorMessage);
+            });
+        }
+        else
+        {
+            Debug.LogError("Error logging innnnn: ");
+            LoadAllSessionData();
+        }
     }
 
 }

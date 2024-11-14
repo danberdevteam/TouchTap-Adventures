@@ -15,6 +15,7 @@ public class Login : MonoBehaviour
 
     [Header("UI")]
     public TMP_Text messageText;
+    public TMP_Text TitleID;
     public TMP_Text messageRegisterText;
     public TMP_InputField emailInputLogin;
     public TMP_InputField usernameInputLogin;
@@ -26,9 +27,9 @@ public class Login : MonoBehaviour
     public Button registerButton;
 
 
-    void Start()
+    public void Start()
     {
-
+        AttemptAutoLogin();
     }
 
     public void RegisterButton()
@@ -61,24 +62,33 @@ public class Login : MonoBehaviour
         PlayFabClientAPI.LoginWithEmailAddress(request, OnLoginSuccess, OnErrorLogin);
 
     }
-      string keyValue = "gameNumber";
+    string keyValue = "gameNumber";
 
     void OnLoginSuccess(LoginResult result)
     {
-        if (result.InfoResultPayload.PlayerProfile.DisplayName == usernameInputLogin.text)
+        Debug.Log("Successful login.");
+        string displayName = result.InfoResultPayload.PlayerProfile.DisplayName;
+        string email = emailInputLogin.text;  // Capture the email from the input field
+
+        if (!string.IsNullOrEmpty(email))
         {
-            Debug.Log("Successful login.");
-            PlayerPrefs.DeleteKey(keyValue);
-            UserManager.Instance.IsLoggedIn = true;
-            UserManager.Instance.DisplayName = result.InfoResultPayload.PlayerProfile.DisplayName;
-            SceneManager.LoadScene("MenuScene");
+            // Store user data in PlayerPrefs
+            PlayerPrefs.SetString("DisplayName", displayName);
+            PlayerPrefs.SetString("userEmail", email);
+            PlayerPrefs.SetString("userToken", result.SessionTicket);
+            PlayerPrefs.Save();
+
+            Debug.Log("Email stored: " + PlayerPrefs.GetString("userEmail"));  // Confirm storage immediately
         }
         else
         {
-            messageText.text = "Username does not match.";
-            messageText.color = Color.red;
-            loginButton.GetComponent<LeanShake>().Shake(10);
+            Debug.LogError("Email input is empty. Cannot save to PlayerPrefs.");
         }
+
+        UserManager.Instance.IsLoggedIn = true;
+        UserManager.Instance.DisplayName = displayName;
+
+        SceneManager.LoadScene("MenuScene");  // Consider the impact of scene loading on data access
     }
 
     void OnRegisterSuccess(RegisterPlayFabUserResult result)
@@ -91,6 +101,7 @@ public class Login : MonoBehaviour
 
     void OnErrorLogin(PlayFabError error)
     {
+        print("Errror : " + error);
         messageText.text = "Invalid parameters";
         messageText.color = Color.red;
         loginButton.GetComponent<LeanShake>().Shake(10);
@@ -111,4 +122,61 @@ public class Login : MonoBehaviour
     // {
 
     // }
+
+    public void SaveAuthToken(string token)
+    {
+        print("AAAAAAA : " + token);
+        PlayerPrefs.SetString("userToken", token);
+        PlayerPrefs.Save();
+    }
+
+    public string LoadAuthToken()
+    {
+        return PlayerPrefs.HasKey("userToken") ? PlayerPrefs.GetString("userToken") : string.Empty;
+    }
+
+    private void AttemptAutoLogin()
+    {
+        if (PlayerPrefs.HasKey("userEmail"))
+        {
+            string storedEmail = PlayerPrefs.GetString("userEmail");
+            Debug.Log("Attempting auto-login with stored email: " + storedEmail);
+
+            if (!string.IsNullOrEmpty(storedEmail))
+            {
+                var request = new LoginWithEmailAddressRequest
+                {
+                    Email = storedEmail,
+                    Password = "mail123",  // Reminder to handle passwords securely
+                    InfoRequestParameters = new GetPlayerCombinedInfoRequestParams
+                    {
+                        GetPlayerProfile = true
+                    }
+                };
+                emailInputLogin.text=storedEmail;
+
+                PlayFabClientAPI.LoginWithEmailAddress(request, OnLoginSuccess, OnErrorLogin);
+            }
+            else
+            {
+                Debug.LogError("Stored email is empty. Cannot proceed with auto-login.");
+            }
+        }
+        else
+        {
+            Debug.Log("No email stored in PlayerPrefs. Prompting manual login.");
+        }
+    }
 }
+
+// void LoginWithToken(string token)
+// {
+//     print("Auto Login with token : " + token);
+//     // This is a conceptual method - PlayFab's usual APIs require a login method to be called
+//     // Since PlayFab sessions are automatically managed, if you have a session token, you're considered logged in
+//     // Here's an example using a generic method
+//     var request = new LoginWithCustomIDRequest { CustomId = token, CreateAccount = false };
+//     PlayFabClientAPI.LoginWithCustomID(request, OnLoginSuccess, OnErrorLogin);
+// }
+
+

@@ -87,6 +87,7 @@ public class OrderController : MonoBehaviour /*IPointerClickHandler*/
 
         Destroy(ptr);
         Debug.Log("Finish");
+        changeLetter.NumberOfLettersDone++;
         pathCount = 0;
         success = true;
         // isFinished=true;

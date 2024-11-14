@@ -238,79 +238,6 @@ MonoBehaviour:
       m_Data: []
   m_Knots:
     m_KnotsLink: []
---- !u!1001 &31654005
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 912314502}
-    m_Modifications:
-    - target: {fileID: 3931697978478038089, guid: c245782081502e44ba0ff823db2dede6, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 3931697978478038089, guid: c245782081502e44ba0ff823db2dede6, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 3931697978478038089, guid: c245782081502e44ba0ff823db2dede6, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 3931697978478038089, guid: c245782081502e44ba0ff823db2dede6, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -60.371826
-      objectReference: {fileID: 0}
-    - target: {fileID: 3931697978478038089, guid: c245782081502e44ba0ff823db2dede6, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -141.60974
-      objectReference: {fileID: 0}
-    - target: {fileID: 3931697978478038089, guid: c245782081502e44ba0ff823db2dede6, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3931697978478038089, guid: c245782081502e44ba0ff823db2dede6, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3931697978478038089, guid: c245782081502e44ba0ff823db2dede6, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3931697978478038089, guid: c245782081502e44ba0ff823db2dede6, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3931697978478038089, guid: c245782081502e44ba0ff823db2dede6, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3931697978478038089, guid: c245782081502e44ba0ff823db2dede6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3931697978478038089, guid: c245782081502e44ba0ff823db2dede6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3931697978478038089, guid: c245782081502e44ba0ff823db2dede6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6266354054618395007, guid: c245782081502e44ba0ff823db2dede6, type: 3}
-      propertyPath: speed
-      value: 150
-      objectReference: {fileID: 0}
-    - target: {fileID: 7054794494664686501, guid: c245782081502e44ba0ff823db2dede6, type: 3}
-      propertyPath: m_Name
-      value: Pointer
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: c245782081502e44ba0ff823db2dede6, type: 3}
 --- !u!1 &34233498
 GameObject:
   m_ObjectHideFlags: 0
@@ -1743,11 +1670,6 @@ MonoBehaviour:
       m_Data: []
   m_Knots:
     m_KnotsLink: []
---- !u!4 &326942722 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3931697978478038089, guid: c245782081502e44ba0ff823db2dede6, type: 3}
-  m_PrefabInstance: {fileID: 31654005}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &330225344
 GameObject:
   m_ObjectHideFlags: 0
@@ -2009,6 +1931,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05e0fe92d60e0f5488e6f2f46cf130e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allSessions:
+    sessions: []
 --- !u!4 &357293022
 Transform:
   m_ObjectHideFlags: 0
@@ -4418,123 +4342,6 @@ MonoBehaviour:
       m_Data: []
   m_Knots:
     m_KnotsLink: []
---- !u!1 &912314501
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 912314502}
-  - component: {fileID: 912314503}
-  m_Layer: 5
-  m_Name: SwipeTrack
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &912314502
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 912314501}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 326942722}
-  m_Father: {fileID: 4096069082228276195}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -128, y: 185.38443}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &912314503
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 912314501}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dab5c7d4c32e743048dfca98e2d5914f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Spline:
-    m_EditModeType: 1
-    m_Knots: []
-    m_MetaData: []
-    m_Closed: 0
-    m_IntData:
-      m_Data: []
-    m_FloatData:
-      m_Data: []
-    m_Float4Data:
-      m_Data: []
-    m_ObjectData:
-      m_Data: []
-  m_Splines:
-  - m_EditModeType: 1
-    m_Knots:
-    - Position:
-        x: 297.9275
-        y: 1.6643982
-        z: 0
-      TangentIn:
-        x: -0
-        y: -0
-        z: -29.793215
-      TangentOut:
-        x: 0
-        y: 0
-        z: 29.793215
-      Rotation:
-        value:
-          x: 0.4986014
-          y: 0.5013947
-          z: -0.5013947
-          w: -0.4986014
-    - Position:
-        x: 0
-        y: 0
-        z: 0
-      TangentIn:
-        x: -0
-        y: -0
-        z: -29.793215
-      TangentOut:
-        x: 0
-        y: 0
-        z: 29.793215
-      Rotation:
-        value:
-          x: 0.49860135
-          y: 0.5013948
-          z: -0.5013946
-          w: -0.49860153
-    m_MetaData:
-    - Mode: 0
-      Tension: 0.5
-    - Mode: 0
-      Tension: 0.5
-    m_Closed: 0
-    m_IntData:
-      m_Data: []
-    m_FloatData:
-      m_Data: []
-    m_Float4Data:
-      m_Data: []
-    m_ObjectData:
-      m_Data: []
-  m_Knots:
-    m_KnotsLink: []
 --- !u!1 &920258839
 GameObject:
   m_ObjectHideFlags: 0
@@ -4594,7 +4401,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 49.4
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -15729,9 +15536,10 @@ MonoBehaviour:
   m_index: 1
   animObj: {fileID: 3448228184114647296}
   finishParticleEffect: {fileID: 5943871342642420849}
-  Pointer: {fileID: 912314501}
   TimeScale: 0
   magneticScrollRect: {fileID: 6389479387522359192}
+  NumberOfLettersDone: 0
+  titleText: {fileID: 8436652266356476008}
 --- !u!222 &924870595368501892
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -21592,7 +21400,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.96981126, g: 0.3862396, b: 0.29094326, a: 1}
+  m_Color: {r: 0.96981126, g: 0.3862396, b: 0.29094326, a: 0.6431373}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -22463,14 +22271,14 @@ RectTransform:
   m_GameObject: {fileID: 7210279422900156953}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 517548117239302443}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -85.5}
+  m_AnchoredPosition: {x: -2.6799965, y: -81.7}
   m_SizeDelta: {x: 40, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1805819587607323822
@@ -22660,7 +22468,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -57.24, y: -144.6}
+  m_AnchoredPosition: {x: -53.2, y: -144.6}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &1839730642728308190
@@ -44367,7 +44175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.98490566, g: 0.39783466, b: 0.3549377, a: 1}
+  m_Color: {r: 0.96862745, g: 0.38431373, b: 0.2901961, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -44697,7 +44505,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -11.01, y: 83.4}
+  m_AnchoredPosition: {x: -12.8, y: 83.4}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &3538203369879563011
@@ -45997,7 +45805,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -46.5, y: -83.81}
+  m_AnchoredPosition: {x: -65, y: -83.81}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3705491092625224027
@@ -48597,12 +48405,11 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4939048165286555157}
   - {fileID: 7821322130013992763}
   - {fileID: 5077812343889635528}
-  - {fileID: 912314502}
   m_Father: {fileID: 5806065317102355487}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -49845,7 +49652,7 @@ RectTransform:
   m_GameObject: {fileID: 2260107290014786141}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 6241717386519452102}
@@ -57980,7 +57787,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -92.7, y: -120.4}
+  m_AnchoredPosition: {x: -92.7, y: -102.28}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &4801870850125981763
@@ -58746,7 +58553,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -151.2, y: -117.2}
+  m_AnchoredPosition: {x: -151.2, y: -102.28}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4905985540622476525
@@ -59030,7 +58837,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2207607725021260481}
   - {fileID: 7370961284682306750}
@@ -59038,8 +58845,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 928.3, y: 500}
+  m_AnchoredPosition: {x: 0, y: 277}
+  m_SizeDelta: {x: 934.97, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!61 &4943726774447154157
 BoxCollider2D:
@@ -62149,7 +61956,7 @@ Canvas:
   m_GameObject: {fileID: 1708292224275149421}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 2
+  m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -65744,7 +65551,7 @@ RectTransform:
   m_GameObject: {fileID: 1708292224275149421}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2067009415565464857}
@@ -65757,8 +65564,8 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 2002.9, y: 925}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
 --- !u!1 &5807188532789758375
 GameObject:
   m_ObjectHideFlags: 0
@@ -74844,7 +74651,7 @@ MonoBehaviour:
   - {fileID: 1878425306167753434}
   - {fileID: 4639040408763587222}
   indexTableManager: {fileID: 1910524761542060841}
-  m_swipeDetect: {fileID: 8179931047097910745}
+  m_swipeDetect: {fileID: 8704947644295105847}
   m_autoArranging: 0
   m_invertOrder: 0
   m_infiniteScrolling: 0
@@ -79432,7 +79239,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -111.5, y: 22.4}
+  m_AnchoredPosition: {x: -107.7, y: 22.4}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &6957113665713568508
@@ -86172,7 +85979,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -3.9000244, y: -3.2999878}
+  m_AnchoredPosition: {x: -3.9000244, y: -3.3000488}
   m_SizeDelta: {x: 150, y: 75}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &7822026150015225440
@@ -87073,17 +86880,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.73
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &7973415861905678791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -88686,70 +88493,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &8179931047097910745
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8704947644295105846}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8945d103369506642970ff135c1299c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  viewport: {fileID: 2207607725021260481}
-  swipeEvents:
-  - callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 6389479387522359192}
-          m_TargetAssemblyTypeName: MagneticScrollView.MagneticScrollRect, Assembly-CSharp
-          m_MethodName: ScrollForward
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: 
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    eventID: 4
-  - callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 6389479387522359192}
-          m_TargetAssemblyTypeName: MagneticScrollView.MagneticScrollRect, Assembly-CSharp
-          m_MethodName: ScrollBack
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: 
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    eventID: 3
-  - callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 6389479387522359192}
-          m_TargetAssemblyTypeName: MagneticScrollView.MagneticScrollRect, Assembly-CSharp
-          m_MethodName: SwipeCancel
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: 
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    eventID: 0
-  minTime: 0.01
-  maxTime: 0.5
 --- !u!224 &8184128757275452916
 RectTransform:
   m_ObjectHideFlags: 0
@@ -93063,7 +92806,7 @@ GameObject:
   - component: {fileID: 4898419583845984090}
   - component: {fileID: 2153377405471986494}
   - component: {fileID: 6389479387522359192}
-  - component: {fileID: 8179931047097910745}
+  - component: {fileID: 8704947644295105847}
   m_Layer: 5
   m_Name: Magnetic Scroll View
   m_TagString: Untagged
@@ -93071,6 +92814,70 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &8704947644295105847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8704947644295105846}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8945d103369506642970ff135c1299c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewport: {fileID: 2207607725021260481}
+  swipeEvents:
+  - callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 6389479387522359192}
+          m_TargetAssemblyTypeName: MagneticScrollView.MagneticScrollRect, Assembly-CSharp
+          m_MethodName: ScrollForward
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    eventID: 4
+  - callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 6389479387522359192}
+          m_TargetAssemblyTypeName: MagneticScrollView.MagneticScrollRect, Assembly-CSharp
+          m_MethodName: ScrollBack
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    eventID: 3
+  - callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 6389479387522359192}
+          m_TargetAssemblyTypeName: MagneticScrollView.MagneticScrollRect, Assembly-CSharp
+          m_MethodName: SwipeCancel
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    eventID: 0
+  minTime: 0.01
+  maxTime: 0.38538602
 --- !u!114 &8708512515616794091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96605,7 +96412,7 @@ RectTransform:
   m_GameObject: {fileID: 5880598228721132568}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 4329952805482581198}
