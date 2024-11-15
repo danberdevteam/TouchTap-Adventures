@@ -29,8 +29,11 @@ public class GraphSwitchManager : MonoBehaviour
         {
             panels.gameObject.SetActive(false);
         }
+        graphHandlers[0].gameObject.SetActive(true);
 
         // print("GraphSwitcherCalled");
+        switchButtons[0].image.color = ActiveTabBG;
+        switchButtons[0].image.rectTransform.sizeDelta = ActiveTabButtonSize;
     }
 
     void SwitchToTab(int tabNumber)

@@ -12,7 +12,7 @@ public class MiniGameTabSwitcher : MonoBehaviour
     public Button[] TabButtons;
     public Color InactiveTabBG, ActiveTabBG;
     public Vector2 InactiveTabButtonSize, ActiveTabButtonSize;
-
+    [SerializeField] Image norecordImage;
     public SessionData sessionData;
 
 
@@ -20,6 +20,7 @@ public class MiniGameTabSwitcher : MonoBehaviour
     [SerializeField] GameObject SessionPanelPrefab;
     void Start()
     {
+        norecordImage.gameObject.SetActive(false);
         int gNumber = 0;
         foreach (MinigameStats stats in sessionData.minigames)
         {
@@ -28,6 +29,19 @@ public class MiniGameTabSwitcher : MonoBehaviour
             GameObject panel = Instantiate(SessionPanelPrefab, PanelBox.transform);
             panel.GetComponent<MiniGameStatsPanel>().minigameStats = stats;
             gNumber++;
+        }
+        if (gNumber == 0)
+        {
+            // GameObject btn = Instantiate(TabButtonPrefabs, this.transform);
+            // // btn.GetComponentInChildren<TMP_Text>().text = "No game played";
+            // // btn.GetComponent<Button>().enabled = false;
+
+            norecordImage.gameObject.SetActive(true);
+        }
+        else
+        {
+            norecordImage.gameObject.SetActive(false);
+
         }
         TabButtons = GetComponentsInChildren<Button>();
         for (int i = 0; i < TabButtons.Length; i++)
@@ -41,7 +55,11 @@ public class MiniGameTabSwitcher : MonoBehaviour
         {
             Tabs.Add(tab.gameObject);
         }
-        
+        if (Tabs.Count > 0)
+        {
+            Tabs[0].SetActive(true);
+        }
+
     }
 
     // Update is called once per frame

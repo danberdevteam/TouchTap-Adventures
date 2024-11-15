@@ -27,8 +27,15 @@ public class SessionTabSwitcher : MonoBehaviour
             GameObject instantiatedPanel = Instantiate(SessionsTabPanelPrefab, SessionsTabHolder.transform);
             instantiatedPanel.GetComponentInChildren<MiniGameTabSwitcher>().sessionData.minigames = manager.dataCollector.minigameStats[i];
             SessionPanels.Add(instantiatedPanel);
+            if (i != 0)
+            {
+                instantiatedPanel.SetActive(false);
+            }
+            else
+            {
+                SessionsTabButtons[0].GetComponent<Button>().image.color = ActiveTabBG;
+            }
 
-            instantiatedPanel.SetActive(false);
         }
 
 
