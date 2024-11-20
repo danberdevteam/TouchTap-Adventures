@@ -35,4 +35,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Leaderboard.unity
     guid: 6047e23f2526da8449aaee3f1bcce5df
+  - enabled: 1
+    path: Assets/Scenes/PurchasingScene.unity
+    guid: 4578515459ae336449cb9d22b0cb0437
   m_configObjects: {}

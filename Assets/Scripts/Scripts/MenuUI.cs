@@ -35,4 +35,8 @@ public class MenuUI : MonoBehaviour
     {
         SceneManager.LoadScene("Leaderboard");
     }
+    public void LoadIAPMenu()
+    {
+        SceneManager.LoadScene("PurchasingScene");
+    }
 }
