@@ -1,6 +1,6 @@
+
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using DG.Tweening;
 using Lean.Touch;
 using TMPro;
@@ -115,14 +115,14 @@ public class MiniGame2Manager : MonoBehaviour
                 case 0:
                     TargetColor = ButtonColor.Red;
                     targetColorText.text = "Red";
-                    indicatorParticles.startColor=Color.red;
+                    indicatorParticles.startColor = Color.red;
                     targetColorText.color = Color.red;
                     GameBase.GetComponent<Renderer>().material = RedMaterial;
                     break;
                 case 1:
                     TargetColor = ButtonColor.Blue;
                     targetColorText.text = "Blue";
-                    indicatorParticles.startColor=Color.blue;
+                    indicatorParticles.startColor = Color.blue;
                     targetColorText.color = Color.blue;
                     GameBase.GetComponent<Renderer>().material = BlueMaterial;
                     break;
@@ -130,7 +130,7 @@ public class MiniGame2Manager : MonoBehaviour
                     TargetColor = ButtonColor.Green;
                     targetColorText.text = "Green";
                     targetColorText.color = Color.green;
-                    indicatorParticles.startColor=Color.green;
+                    indicatorParticles.startColor = Color.green;
                     GameBase.GetComponent<Renderer>().material = GreenMaterial;
                     break;
             }
@@ -149,7 +149,7 @@ public class MiniGame2Manager : MonoBehaviour
             }
         }
 
-    
+
 
         print("Called");
 
@@ -186,11 +186,12 @@ public class MiniGame2Manager : MonoBehaviour
     void EndGame()
 
     {
-          MinigameStats minigameStats = new MinigameStats
+        TimeSpent = (float)System.Math.Round(TimeSpent, 2);
+        MinigameStats minigameStats = new MinigameStats
         {
             gameName = "Color",
-            CorrectClicks =CorrectColorSelected,
-            IncorrectClicks=wrongColorClicked,
+            CorrectClicks = CorrectColorSelected,
+            IncorrectClicks = wrongColorClicked,
             timeSpent = TimeSpent,
             wrongColorClicked = ClickedSomeWhereElse
 

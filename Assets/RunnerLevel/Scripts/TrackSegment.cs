@@ -48,6 +48,9 @@ public class TrackSegment : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         _TrackManager?.SpawnNewSegment();
+        _TrackManager?.SpawnNewSegment();
+
+
     }
 
     public void SpawnObstacles()

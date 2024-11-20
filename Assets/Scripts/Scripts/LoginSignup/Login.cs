@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using PlayFab;
 using UnityEngine.UI;
@@ -89,6 +87,19 @@ public class Login : MonoBehaviour
         UserManager.Instance.DisplayName = displayName;
 
         SceneManager.LoadScene("MenuScene");  // Consider the impact of scene loading on data access
+        // LootLockerSDKManager.StartGoogleSession(result.PlayFabId, (response) =>
+        // {
+        //     if (response.success)
+        //     {
+        //         Debug.Log("LootLocker session started successfully." + "Player ID: " + response.player_id);
+        //     }
+        //     else
+        //     {
+        //         Debug.LogError("Failed to start LootLocker session: " + response.errorData);
+        //     }
+        // });
+
+
     }
 
     void OnRegisterSuccess(RegisterPlayFabUserResult result)
@@ -112,16 +123,10 @@ public class Login : MonoBehaviour
         messageText.color = Color.red;
         registerButton.GetComponent<LeanShake>().Shake(10);
     }
-    // void Start()
-    // {
 
-    // }
 
-    // // Update is called once per frame
-    // void Update()
-    // {
 
-    // }
+
 
     public void SaveAuthToken(string token)
     {
@@ -153,7 +158,7 @@ public class Login : MonoBehaviour
                         GetPlayerProfile = true
                     }
                 };
-                emailInputLogin.text=storedEmail;
+                emailInputLogin.text = storedEmail;
 
                 PlayFabClientAPI.LoginWithEmailAddress(request, OnLoginSuccess, OnErrorLogin);
             }
@@ -167,16 +172,12 @@ public class Login : MonoBehaviour
             Debug.Log("No email stored in PlayerPrefs. Prompting manual login.");
         }
     }
+
 }
 
-// void LoginWithToken(string token)
-// {
-//     print("Auto Login with token : " + token);
-//     // This is a conceptual method - PlayFab's usual APIs require a login method to be called
-//     // Since PlayFab sessions are automatically managed, if you have a session token, you're considered logged in
-//     // Here's an example using a generic method
-//     var request = new LoginWithCustomIDRequest { CustomId = token, CreateAccount = false };
-//     PlayFabClientAPI.LoginWithCustomID(request, OnLoginSuccess, OnErrorLogin);
-// }
+
+
+
+
 
 

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -41,6 +42,7 @@ TimeSpent=+Time.deltaTime;
 
     public void EndGame()
     {
+        TimeSpent=(float)Math.Round(TimeSpent, 2);
         MinigameStats minigameStats = new MinigameStats
         {
             gameName = "Alphabet",

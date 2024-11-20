@@ -161,6 +161,7 @@ public class MiniGame3Manager : MonoBehaviour
 
     void EndGame()
     {
+        TimeSpent = (float)Math.Round(TimeSpent, 2);
 
         MinigameStats minigameStats = new MinigameStats
         {

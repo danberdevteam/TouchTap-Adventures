@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +15,7 @@ public class ObjectsInventory : MonoBehaviour
 
     void Start()
     {
-        dataCollector=FindObjectOfType<DataCollector>();
+        dataCollector = FindObjectOfType<DataCollector>();
 
         foreach (CountableObject s in Star)
         {
@@ -40,6 +41,7 @@ public class ObjectsInventory : MonoBehaviour
 
     IEnumerator EndGame()
     {
+        gameUI.timeSpent = (float)Math.Round(gameUI.timeSpent, 2);
         MinigameStats minigameStats = new MinigameStats
         {
             gameName = "Count",
