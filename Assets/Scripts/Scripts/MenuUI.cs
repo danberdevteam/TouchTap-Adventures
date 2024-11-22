@@ -30,6 +30,7 @@ public class MenuUI : MonoBehaviour
     public void LoadDashBoard()
     {
         SceneManager.LoadScene("ParentalDashboard");
+        
     }
     public void LoadLeaderBoard()
     {

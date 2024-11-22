@@ -96,12 +96,24 @@ public class ChangeLetters : MonoBehaviour
     public void ScrollToNextWord()
     {
         magneticScrollRect.ScrollForward();
-        if (NumberOfLettersDone == 26)
+        if (NumberOfLettersDone == 3)
         {
             titleText.text = "Well Done";
+            // StartCoroutine(DelayEnd());
+            GameManager.Instance.EndGame("MainScene");
 
         }
     }
+
+
+
+    // IEnumerator DelayEnd()
+    // {
+    //     yield return new WaitForSeconds(4);
+    //     // player.EndMiniGame(2);
+    //     GameManager.Instance.SetPlayerPrefs(1);
+    //     GameManager.Instance.EndGame("MainScene");
+    // }
 
     // public void ShowStars()
     // {

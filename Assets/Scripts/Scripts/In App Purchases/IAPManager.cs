@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using PlayFab;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Purchasing;
@@ -12,26 +13,29 @@ public class IAPManager : MonoBehaviour, IStoreListener
     private static IExtensionProvider m_StoreExtensionProvider; // The store-specific Purchasing subsystems.
     private static Product test_product = null;
 
-
-    public static string GOLD_50 = "menuitem1";
-    public static string NO_ADS = "noads";
+    public const string DASHBOARD = "menuitem1";
+    public const string LEADERBOARD = "menuitem2";
     public static string SUB1 = "subscription1";
 
     private static TMP_Text myText;
 
     private bool return_complete = true;
 
+    private Button dashboardButton;
+    private Button leaderboardButton;
+
+    public delegate void PurchaseSuccessCallback();
+    public static event PurchaseSuccessCallback OnDashboardPurchaseSuccess;
+    public static event PurchaseSuccessCallback OnLeaderboardPurchaseSuccess;
+
     void Start()
     {
-        // myText = GameObject.Find("MyText").GetComponent<Text>();
-
         // If we haven't set up the Unity Purchasing reference
         if (m_StoreController == null)
         {
             // Begin to configure our connection to Purchasing
             InitializePurchasing();
         }
-        MyDebug("Complete = " + return_complete.ToString());
     }
 
     public void InitializePurchasing()
@@ -43,8 +47,8 @@ public class IAPManager : MonoBehaviour, IStoreListener
 
         var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
 
-        builder.AddProduct(GOLD_50, ProductType.NonConsumable);
-        builder.AddProduct(NO_ADS, ProductType.NonConsumable);
+        builder.AddProduct(DASHBOARD, ProductType.NonConsumable);
+        builder.AddProduct(LEADERBOARD, ProductType.NonConsumable);
         builder.AddProduct(SUB1, ProductType.Subscription);
 
         UnityPurchasing.Initialize(this, builder);
@@ -53,23 +57,34 @@ public class IAPManager : MonoBehaviour, IStoreListener
 
     private bool IsInitialized()
     {
+
         return m_StoreController != null && m_StoreExtensionProvider != null;
+
     }
 
-    public void BuySubscription()
+    public void BuyDashboard(Button lockedButton)
     {
-        BuyProductID(SUB1);
+        dashboardButton = lockedButton; // Store the reference to the button
+        BuyProductID(DASHBOARD);
     }
 
-    public void BuyGold50()
+    public void BuyLeaderboard(Button lockedButton)
     {
-        BuyProductID(GOLD_50);
+        leaderboardButton = lockedButton; // Store the reference to the button
+        BuyProductID(LEADERBOARD);
     }
 
-    public void BuyNoAds()
+    public void UnlockButton(Button buttonToUnLock)
     {
-        BuyProductID(NO_ADS);
+        buttonToUnLock.GetComponentsInChildren<Image>()[1].gameObject.SetActive(false);
+        buttonToUnLock.GetComponentsInChildren<TMP_Text>()[0].gameObject.SetActive(false);
+        buttonToUnLock.onClick.RemoveAllListeners();
     }
+
+    // public void BuyNoAds()
+    // {
+    //     BuyProductID(NO_ADS);
+    // }
 
     public void CompletePurchase()
     {
@@ -89,41 +104,31 @@ public class IAPManager : MonoBehaviour, IStoreListener
         MyDebug("Complete = " + return_complete.ToString());
 
     }
-    public void RestorePurchases()
-    {
-        m_StoreExtensionProvider.GetExtension<IAppleExtensions>().RestoreTransactions(result =>
-        {
-            if (result)
-            {
-                MyDebug("Restore purchases succeeded.");
-            }
-            else
-            {
-                MyDebug("Restore purchases failed.");
-            }
-        });
-    }
 
-    void BuyProductID(string productId)
+
+    bool BuyProductID(string productId)
     {
         if (IsInitialized())
         {
             Product product = m_StoreController.products.WithID(productId);
-            print("product : " + product);
+            print("product ID : " + product.transactionID);
 
             if (product != null && product.availableToPurchase)
             {
                 MyDebug(string.Format("Purchasing product:" + product.definition.id.ToString()));
                 m_StoreController.InitiatePurchase(product);
+                return true;
             }
             else
             {
                 MyDebug("BuyProductID: FAIL. Not purchasing product, either is not found or is not available for purchase");
+                return false;
             }
         }
         else
         {
             MyDebug("BuyProductID FAIL. Not initialized.");
+            return false;
         }
     }
 
@@ -133,6 +138,28 @@ public class IAPManager : MonoBehaviour, IStoreListener
 
         m_StoreController = controller;
         m_StoreExtensionProvider = extensions;
+
+        CheckPurchasedItems();
+    }
+
+    private void CheckPurchasedItems()
+    {
+        if (m_StoreController == null) return;
+
+        foreach (var product in m_StoreController.products.all)
+        {
+            if (product.hasReceipt)
+            {
+                Debug.Log($"Product already purchased: {product.definition.id}");
+                // Save purchase status locally
+                PlayerPrefs.SetInt(product.definition.id, 1); // 1 = Purchased
+            }
+            else
+            {
+                Debug.Log($"Product not purchased: {product.definition.id}");
+                PlayerPrefs.SetInt(product.definition.id, 0); // 0 = Not purchased
+            }
+        }
     }
 
 
@@ -141,29 +168,58 @@ public class IAPManager : MonoBehaviour, IStoreListener
         // Purchasing set-up has not succeeded. Check error for reason. Consider sharing this reason with the user.
         MyDebug("OnInitializeFailed InitializationFailureReason:" + error);
     }
- 
+
 
 
     public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args)
     {
-        test_product = args.purchasedProduct;
-
-
-
-        //MyDebug(string.Format("ProcessPurchase: FAIL. Unrecognized product: '{0}'", args.purchasedProduct.definition.id));
-
-        if (return_complete)
+        Product purchasedProduct = args.purchasedProduct;
+        switch (args.purchasedProduct.definition.id)
         {
-            MyDebug(string.Format("ProcessPurchase: Complete. Product:" + args.purchasedProduct.definition.id + " - " + test_product.transactionID.ToString()));
-            return PurchaseProcessingResult.Complete;
+            case DASHBOARD:
+                Debug.Log($"Purchase successful: {args.purchasedProduct.definition.id}");
+                SavePurchaseToPlayFab(DASHBOARD);
+                // Get metadata
+                DisplayProductMetadata(purchasedProduct);
+                if (dashboardButton != null)
+                {
+                    UnlockButton(dashboardButton);
+                }
+                OnDashboardPurchaseSuccess?.Invoke();
+                break;
+            case LEADERBOARD:
+                SavePurchaseToPlayFab(LEADERBOARD);
+                Debug.Log($"Purchase successful: {args.purchasedProduct.definition.id}");
+
+                // Get metadata
+                DisplayProductMetadata(purchasedProduct);
+                if (leaderboardButton != null)
+                {
+                    UnlockButton(leaderboardButton);
+                }
+                OnLeaderboardPurchaseSuccess?.Invoke();
+                break;
+        }
+
+        return PurchaseProcessingResult.Complete;
+    }
+
+    private void DisplayProductMetadata(Product product)
+    {
+        if (product != null)
+        {
+            Debug.Log($"Product Title: {product.metadata.localizedTitle}");
+            Debug.Log($"Product Description: {product.metadata.localizedDescription}");
+            Debug.Log($"Product Price: {product.metadata.localizedPriceString}");
+            Debug.Log($"Currency Code: {product.metadata.isoCurrencyCode}");
+            Debug.Log($"Transaction ID: {product.transactionID}");
         }
         else
         {
-            MyDebug(string.Format("ProcessPurchase: Pending. Product:" + args.purchasedProduct.definition.id + " - " + test_product.transactionID.ToString()));
-            return PurchaseProcessingResult.Pending;
+            Debug.Log("Product metadata not available.");
         }
-
     }
+
 
 
     public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
@@ -182,4 +238,34 @@ public class IAPManager : MonoBehaviour, IStoreListener
     {
         throw new System.NotImplementedException();
     }
+
+    private void SavePurchaseToPlayFab(string productId)
+    {
+        var data = new Dictionary<string, string>
+    {
+        { productId, "purchased" }
+    };
+
+        PlayFabClientAPI.UpdateUserData(new PlayFab.ClientModels.UpdateUserDataRequest
+        {
+            Data = data
+        },
+        result => Debug.Log($"Successfully saved purchase state to PlayFab for {productId}."),
+        error => Debug.LogError($"Failed to save purchase state to PlayFab: {error.ErrorMessage}"));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

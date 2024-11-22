@@ -217,7 +217,7 @@ public class DataCollector : MonoBehaviour
                 for (int i = 0; i < sessions.sessions.Count; i++)
                 {
                     miniGameList.Add(new List<MinigameStats>());
-                    Debug.Log($"Session ID: {sessions.sessions[i].sessionId}");
+                    // Debug.Log($"Session ID: {sessions.sessions[i].sessionId}");
                     for (int j = 0; j < sessions.sessions[i].minigames.Count; j++)
                     {
 
