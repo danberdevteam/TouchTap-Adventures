@@ -1687,6 +1687,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5096310921358579189}
   - component: {fileID: 1178138926497943439}
+  - component: {fileID: 7319846247877874865}
   m_Layer: 0
   m_Name: Chibi_Cat_06 1
   m_TagString: Untagged
@@ -1732,6 +1733,21 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7319846247877874865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5616669764911222607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f61301eeaa5b34f979005b93ec6ac5f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Price: 1.99
+  Name: Cat 7
+  productID: cat7
 --- !u!1 &5706263719673458923
 GameObject:
   m_ObjectHideFlags: 0

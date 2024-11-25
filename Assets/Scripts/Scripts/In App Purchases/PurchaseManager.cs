@@ -16,6 +16,8 @@ public class PurchaseManager : MonoBehaviour
     public const string DASHBOARD = "menuitem1";
     public const string LEADERBOARD = "menuitem2";
 
+
+
     void OnEnable()
     {
         IAPManager.OnDashboardPurchaseSuccess += ButtonAddListnerConditionDashboard;

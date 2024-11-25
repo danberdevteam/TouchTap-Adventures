@@ -23,10 +23,12 @@ public class IAPManager : MonoBehaviour, IStoreListener
 
     private Button dashboardButton;
     private Button leaderboardButton;
-
+    private Button catBuyButton;
     public delegate void PurchaseSuccessCallback();
     public static event PurchaseSuccessCallback OnDashboardPurchaseSuccess;
     public static event PurchaseSuccessCallback OnLeaderboardPurchaseSuccess;
+
+    public string catIDnumber;
 
     void Start()
     {
@@ -49,7 +51,7 @@ public class IAPManager : MonoBehaviour, IStoreListener
 
         builder.AddProduct(DASHBOARD, ProductType.NonConsumable);
         builder.AddProduct(LEADERBOARD, ProductType.NonConsumable);
-        builder.AddProduct(SUB1, ProductType.Subscription);
+        // builder.AddProduct(SUB1, ProductType.Subscription);
 
         UnityPurchasing.Initialize(this, builder);
     }
@@ -72,6 +74,13 @@ public class IAPManager : MonoBehaviour, IStoreListener
     {
         leaderboardButton = lockedButton; // Store the reference to the button
         BuyProductID(LEADERBOARD);
+    }
+
+    public void BuyCharacter(Button lockedButton, string catIDNumber)
+    {
+        catBuyButton = lockedButton;
+        BuyProductID(catIDNumber);
+
     }
 
     public void UnlockButton(Button buttonToUnLock)
@@ -199,6 +208,20 @@ public class IAPManager : MonoBehaviour, IStoreListener
                 }
                 OnLeaderboardPurchaseSuccess?.Invoke();
                 break;
+
+            //Add character buy processing.
+            // case catIDnumber:
+            //     SavePurchaseToPlayFab(LEADERBOARD);
+            //     Debug.Log($"Purchase successful: {args.purchasedProduct.definition.id}");
+
+            //     // Get metadata
+            //     DisplayProductMetadata(purchasedProduct);
+            //     if (leaderboardButton != null)
+            //     {
+            //         UnlockButton(leaderboardButton);
+            //     }
+            //     OnLeaderboardPurchaseSuccess?.Invoke();
+            //     break;
         }
 
         return PurchaseProcessingResult.Complete;

@@ -3197,6 +3197,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8092133001476144777}
   - component: {fileID: 2786924167592584435}
+  - component: {fileID: 3604989068189041748}
   m_Layer: 0
   m_Name: Chibi_Cat_Show_Equipment 1
   m_TagString: Untagged
@@ -3242,6 +3243,21 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3604989068189041748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8865011217929020467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f61301eeaa5b34f979005b93ec6ac5f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Price: 2.99
+  Name: Cat 11
+  productID: cat11
 --- !u!1 &8885512628297702650
 GameObject:
   m_ObjectHideFlags: 0

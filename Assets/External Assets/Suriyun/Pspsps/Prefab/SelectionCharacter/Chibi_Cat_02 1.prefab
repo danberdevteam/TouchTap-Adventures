@@ -2875,6 +2875,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8898908557151702423}
   - component: {fileID: 3287463882105018349}
+  - component: {fileID: 1949526655038532636}
   m_Layer: 0
   m_Name: Chibi_Cat_02 1
   m_TagString: Untagged
@@ -2920,6 +2921,21 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1949526655038532636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8085252723492411181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f61301eeaa5b34f979005b93ec6ac5f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Price: 1.99
+  Name: Cat3
+  productID: cat3
 --- !u!1 &8105881813843177444
 GameObject:
   m_ObjectHideFlags: 0
