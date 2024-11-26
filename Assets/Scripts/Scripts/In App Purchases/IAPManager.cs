@@ -27,11 +27,13 @@ public class IAPManager : MonoBehaviour, IStoreListener
     public delegate void PurchaseSuccessCallback();
     public static event PurchaseSuccessCallback OnDashboardPurchaseSuccess;
     public static event PurchaseSuccessCallback OnLeaderboardPurchaseSuccess;
+    public static event PurchaseSuccessCallback OnCatPurchaseSuccess;
 
     public string catIDnumber;
 
     void Start()
     {
+
         // If we haven't set up the Unity Purchasing reference
         if (m_StoreController == null)
         {
@@ -39,7 +41,7 @@ public class IAPManager : MonoBehaviour, IStoreListener
             InitializePurchasing();
         }
     }
-
+    ConfigurationBuilder builder;
     public void InitializePurchasing()
     {
         if (IsInitialized())
@@ -47,14 +49,26 @@ public class IAPManager : MonoBehaviour, IStoreListener
             return;
         }
 
-        var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
 
+
+        builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
         builder.AddProduct(DASHBOARD, ProductType.NonConsumable);
         builder.AddProduct(LEADERBOARD, ProductType.NonConsumable);
+
+        for (int i = 0; i < 11; i++)
+        {
+            builder.AddProduct("cat" + i, ProductType.NonConsumable);
+        }
+
         // builder.AddProduct(SUB1, ProductType.Subscription);
 
         UnityPurchasing.Initialize(this, builder);
     }
+
+    // public void AddToBuilder(string buildId)
+    // {
+    //     builder.AddProduct(buildId, ProductType.NonConsumable);
+    // }
 
 
     private bool IsInitialized()
@@ -72,14 +86,16 @@ public class IAPManager : MonoBehaviour, IStoreListener
 
     public void BuyLeaderboard(Button lockedButton)
     {
+        print("Buy leaderboard function called");
         leaderboardButton = lockedButton; // Store the reference to the button
         BuyProductID(LEADERBOARD);
     }
 
-    public void BuyCharacter(Button lockedButton, string catIDNumber)
+    public void BuyCharacter(Button lockedButton, string catIDNum)
     {
         catBuyButton = lockedButton;
-        BuyProductID(catIDNumber);
+        catIDnumber = catIDNum;
+        BuyProductID(catIDNum);
 
     }
 
@@ -117,6 +133,7 @@ public class IAPManager : MonoBehaviour, IStoreListener
 
     bool BuyProductID(string productId)
     {
+        print("Product to be bought " + productId);
         if (IsInitialized())
         {
             Product product = m_StoreController.products.WithID(productId);
@@ -183,45 +200,44 @@ public class IAPManager : MonoBehaviour, IStoreListener
     public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args)
     {
         Product purchasedProduct = args.purchasedProduct;
-        switch (args.purchasedProduct.definition.id)
+        string purchasedProductId = purchasedProduct.definition.id;
+
+        if (purchasedProductId == DASHBOARD)
         {
-            case DASHBOARD:
-                Debug.Log($"Purchase successful: {args.purchasedProduct.definition.id}");
-                SavePurchaseToPlayFab(DASHBOARD);
-                // Get metadata
-                DisplayProductMetadata(purchasedProduct);
-                if (dashboardButton != null)
-                {
-                    UnlockButton(dashboardButton);
-                }
-                OnDashboardPurchaseSuccess?.Invoke();
-                break;
-            case LEADERBOARD:
-                SavePurchaseToPlayFab(LEADERBOARD);
-                Debug.Log($"Purchase successful: {args.purchasedProduct.definition.id}");
-
-                // Get metadata
-                DisplayProductMetadata(purchasedProduct);
-                if (leaderboardButton != null)
-                {
-                    UnlockButton(leaderboardButton);
-                }
-                OnLeaderboardPurchaseSuccess?.Invoke();
-                break;
-
-            //Add character buy processing.
-            // case catIDnumber:
-            //     SavePurchaseToPlayFab(LEADERBOARD);
-            //     Debug.Log($"Purchase successful: {args.purchasedProduct.definition.id}");
-
-            //     // Get metadata
-            //     DisplayProductMetadata(purchasedProduct);
-            //     if (leaderboardButton != null)
-            //     {
-            //         UnlockButton(leaderboardButton);
-            //     }
-            //     OnLeaderboardPurchaseSuccess?.Invoke();
-            //     break;
+            Debug.Log($"Purchase successful: {purchasedProductId}");
+            SavePurchaseToPlayFab(DASHBOARD);
+            DisplayProductMetadata(purchasedProduct);
+            if (dashboardButton != null)
+            {
+                UnlockButton(dashboardButton);
+            }
+            OnDashboardPurchaseSuccess?.Invoke();
+        }
+        else if (purchasedProductId == LEADERBOARD)
+        {
+            Debug.Log($"Purchase successful: {purchasedProductId}");
+            SavePurchaseToPlayFab(LEADERBOARD);
+            DisplayProductMetadata(purchasedProduct);
+            if (leaderboardButton != null)
+            {
+                UnlockButton(leaderboardButton);
+            }
+            OnLeaderboardPurchaseSuccess?.Invoke();
+        }
+        else if (purchasedProductId == catIDnumber)
+        {
+            Debug.Log($"Purchase successful: {purchasedProductId}");
+            // SavePurchaseToPlayFab(catIDnumber);
+            DisplayProductMetadata(purchasedProduct);
+            if (catBuyButton != null)
+            {
+                UnlockButton(catBuyButton);
+            }
+            OnCatPurchaseSuccess?.Invoke();
+        }
+        else
+        {
+            Debug.Log($"Unknown product purchased: {purchasedProductId}");
         }
 
         return PurchaseProcessingResult.Complete;

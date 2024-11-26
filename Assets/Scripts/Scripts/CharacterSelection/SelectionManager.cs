@@ -1,4 +1,8 @@
+
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SelectChar : MonoBehaviour
 {
@@ -23,11 +27,42 @@ public class SelectChar : MonoBehaviour
 
 	// The index of the current character
 	public int currentChar = 0;
+	public Button buyButton;
+	public Transform ButtonHolder;
+	public List<Button> Buybuttons;
 
 	[SerializeField] CharacterSceneManager characterSceneManager;
 
+	void Awake()
+	{
+		int index = 0;
+		foreach (Transform t in charsPrefabs)
+		{
+			// characterSceneManager.iAPManager.AddToBuilder(charsPrefabs[index].GetComponent<CharacterSelector>().productID);
+			Button btn = Instantiate(buyButton, ButtonHolder);
+			btn.GetComponentsInChildren<TMP_Text>()[0].text = "$" + charsPrefabs[index].GetComponent<CharacterSelector>().Price;
+			btn.GetComponentsInChildren<TMP_Text>()[1].text = charsPrefabs[index].GetComponent<CharacterSelector>().Name;
+			int capturedIndex = index;
+			btn.onClick.AddListener(() => AddlistnerToButton(capturedIndex));
+			Buybuttons.Add(btn);
+			btn.gameObject.SetActive(false);
+			print("Product added to builder" + charsPrefabs[index].GetComponent<CharacterSelector>().productID);
+			index++;
+		}
+		if (index > 1)
+		{
+			Buybuttons[0].gameObject.SetActive(true);
+		}
+	}
+
+	void AddlistnerToButton(int num)
+	{
+		characterSceneManager.iAPManager.BuyCharacter(Buybuttons[num], charsPrefabs[num].GetComponent<CharacterSelector>().productID);
+	}
+
 	void Start()
 	{
+
 		// Initialize the chars array
 		chars = new GameObject[charsPrefabs.Length];
 
@@ -37,6 +72,8 @@ public class SelectChar : MonoBehaviour
 		{
 			chars[index] = Instantiate(t.gameObject, markerRight2.position, Quaternion.identity);
 			characterSceneManager.characters.Add(chars[index]);
+			//Add products to builder
+
 			index++;
 		}
 

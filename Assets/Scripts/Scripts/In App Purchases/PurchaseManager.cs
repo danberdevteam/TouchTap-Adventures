@@ -50,6 +50,7 @@ public class PurchaseManager : MonoBehaviour
     }
     void LeaderboardButtonClick()
     {
+        print("Leaderboard key pressed");
         manager.BuyLeaderboard(leaderBoardLockedButton);
     }
 
