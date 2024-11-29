@@ -141,7 +141,7 @@ public class SelectChar : MonoBehaviour
 
 						int capturedIndex = i; // Capture the current value of 'i'
 						Buybuttons[capturedIndex].onClick.AddListener(() => saveIDToPLayerPref(capturedIndex));
-						Buybuttons[capturedIndex].GetComponent<CharacterBuyButton>().ButtonBoughtCondition();
+						
 					}
 				}
 			}
@@ -152,6 +152,7 @@ public class SelectChar : MonoBehaviour
 	void saveIDToPLayerPref(int num)
 	{
 		PlayerPrefs.SetInt(CatIDPlayeprefKey, num);
+		Buybuttons[num].GetComponent<CharacterBuyButton>().ButtonBoughtCondition();
 	}
 
 
