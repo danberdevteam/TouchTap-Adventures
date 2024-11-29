@@ -1,6 +1,8 @@
 
 using System.Collections.Generic;
+using PlayFab;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -44,6 +46,7 @@ public class SelectChar : MonoBehaviour
 			btn.GetComponentsInChildren<TMP_Text>()[1].text = charsPrefabs[index].GetComponent<CharacterSelector>().Name;
 			int capturedIndex = index;
 			btn.onClick.AddListener(() => AddlistnerToButton(capturedIndex));
+
 			Buybuttons.Add(btn);
 			btn.gameObject.SetActive(false);
 			print("Product added to builder" + charsPrefabs[index].GetComponent<CharacterSelector>().productID);
@@ -52,12 +55,17 @@ public class SelectChar : MonoBehaviour
 		if (index > 1)
 		{
 			Buybuttons[0].gameObject.SetActive(true);
+			IAPManager.instance.UnlockButtonSkinIAP(Buybuttons[0]);
+			Buybuttons[0].GetComponent<CharacterBuyButton>().ButtonBoughtCondition();
+
 		}
+
+		FetchPurchaseStateFromPlayFab();
 	}
 
 	void AddlistnerToButton(int num)
 	{
-		characterSceneManager.iAPManager.BuyCharacter(Buybuttons[num], charsPrefabs[num].GetComponent<CharacterSelector>().productID);
+		IAPManager.instance.BuyCharacter(Buybuttons[num], charsPrefabs[num].GetComponent<CharacterSelector>().productID);
 	}
 
 	void Start()
@@ -101,6 +109,52 @@ public class SelectChar : MonoBehaviour
 		characterSceneManager.changeButton.Invoke();
 
 	}
+
+
+
+	private void FetchPurchaseStateFromPlayFab()
+	{
+		print("Fetching data");
+		PlayFabClientAPI.GetUserData(new PlayFab.ClientModels.GetUserDataRequest(),
+		result =>
+		{
+			if (result.Data != null)
+			{
+				// if (result.Data.ContainsKey(DASHBOARD) && result.Data[DASHBOARD].Value == "purchased")
+				// {
+				//     UnlockButton(dashboardLockedButton);
+				//     ButtonAddListnerConditionDashboard();
+				// }
+
+				// if (result.Data.ContainsKey(LEADERBOARD) && result.Data[LEADERBOARD].Value == "purchased")
+				// {
+				//     UnlockButton(leaderBoardLockedButton);
+				//     ButtonAddListnerConditionLeaderboard();
+				// }
+
+				for (int i = 0; i < Buybuttons.Count; i++)
+				{
+					int num=i+1;
+					if (result.Data.ContainsKey("cat" + num) && result.Data["cat" + num].Value == "purchased")
+					{
+						IAPManager.instance.UnlockButtonSkinIAP(Buybuttons[i]);
+
+						int capturedIndex = i; // Capture the current value of 'i'
+						Buybuttons[capturedIndex].onClick.AddListener(() => saveIDToPLayerPref(capturedIndex));
+						Buybuttons[capturedIndex].GetComponent<CharacterBuyButton>().ButtonBoughtCondition();
+					}
+				}
+			}
+		},
+		error => Debug.LogError($"Failed to fetch purchase state from PlayFab: {error.ErrorMessage}"));
+	}
+	static string CatIDPlayeprefKey = "CatSelected";
+	void saveIDToPLayerPref(int num)
+	{
+		PlayerPrefs.SetInt(CatIDPlayeprefKey, num);
+	}
+
+
 
 	private void ManageCharacterPositions()
 	{

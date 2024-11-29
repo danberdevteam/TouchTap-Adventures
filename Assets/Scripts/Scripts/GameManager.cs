@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public int howOftenShouldObstacleSpawn = 5;
     public int MiniGameNumber = 0;
     string keyValue = "gameNumber";
+    public int pickupLimit=10;
 
 
 
@@ -98,6 +99,11 @@ public class GameManager : MonoBehaviour
     public void SetPlayerPrefs(int gamenumber)
     {
         PlayerPrefs.SetInt(keyValue, gamenumber);
+    }
+
+    public void IncreasePickupLimit()
+    {
+        pickupLimit=1000000;
     }
 
 

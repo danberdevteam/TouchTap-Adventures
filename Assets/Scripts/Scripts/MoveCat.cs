@@ -38,6 +38,7 @@ public class MoveCat : MonoBehaviour
 
     void Start()
     {
+        pickupLimit=GameManager.Instance.pickupLimit;
         animator = Cat.GetComponent<Animator>();
 
         cc = gameObject.GetComponent<CharacterController>();
@@ -229,10 +230,10 @@ public class MoveCat : MonoBehaviour
 
         // Assuming you have an Idle state, adjust as necessary
     }
-
+public int pickupLimit=10;
     private void OnTriggerEnter(Collider other)
     {
-        if (PickupCount == 10)
+        if (PickupCount == pickupLimit)
         {
             animator.SetTrigger("Idle");
             StopTheGame();
@@ -254,6 +255,11 @@ public class MoveCat : MonoBehaviour
             mainGameUI.UpdateScore(PickupCount);
             print(PickupCount);
         }
+    }
+
+    public void INcreasepickupLimit()
+    {
+        pickupLimit=200000;
     }
 
     public void StopTheGame()

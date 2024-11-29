@@ -40,4 +40,9 @@ public class MenuUI : MonoBehaviour
     {
         SceneManager.LoadScene("PurchasingScene");
     }
+
+    public void LoadCharacterSelectionScene()
+    {
+        SceneManager.LoadScene("SkinSelection");
+    }
 }

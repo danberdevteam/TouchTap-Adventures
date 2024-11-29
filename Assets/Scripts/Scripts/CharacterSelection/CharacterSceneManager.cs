@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Purchasing;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class CharacterSceneManager : MonoBehaviour
@@ -11,7 +12,7 @@ public class CharacterSceneManager : MonoBehaviour
     // Start is called before the first frame update
     // [SerializeField] LeanSelectionManager
     [SerializeField] SelectChar selectorManager;
-    [SerializeField] public IAPManager iAPManager;
+    //[SerializeField] public IAPManager iAPManager;
     public List<GameObject> characters;
 
     public Action changeButton;
@@ -32,7 +33,7 @@ public class CharacterSceneManager : MonoBehaviour
 
     void Start()
     {
-        
+
         changeButton += ChangeButton;
         // buyButton.onClick.AddListener(AddlistnerToButton);
     }
@@ -56,11 +57,30 @@ public class CharacterSceneManager : MonoBehaviour
     void AddlistnerCondition()
     {
         selectorManager.Buybuttons[selectorManager.currentChar].onClick.AddListener(saveIDToPLayerPref);
+
+        for (int i = 0; i < selectorManager.Buybuttons.Count; i++)
+        {
+            if (i != selectorManager.currentChar)
+            {
+                selectorManager.Buybuttons[i].GetComponent<CharacterBuyButton>().ResetButton();
+            }
+        }
     }
 
     void saveIDToPLayerPref()
     {
         PlayerPrefs.SetInt(CatIDPlayeprefKey, selectorManager.currentChar);
+        selectorManager.Buybuttons[selectorManager.currentChar].GetComponent<CharacterBuyButton>().ButtonBoughtCondition();
+    }
+
+    public void PLayGame()
+    {
+        SceneManager.LoadScene("MainScene");
+    }
+
+    public void BackGame()
+    {
+        SceneManager.LoadScene("MenuScene");
     }
 
 

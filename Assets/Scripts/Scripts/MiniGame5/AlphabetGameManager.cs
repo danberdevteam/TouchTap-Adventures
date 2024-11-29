@@ -54,7 +54,7 @@ TimeSpent=+Time.deltaTime;
         };
         dataCollector.AddMinigameStats(minigameStats);
         print(completedLetter + "Completed letter" + missedLetter + "Missed letter");
-        // GameManager.Instance.SetPlayerPrefs(4);
+        GameManager.Instance.IncreasePickupLimit();
         // GameManager.Instance.EndGame("MainScene");
     }
 

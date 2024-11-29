@@ -9,6 +9,8 @@ using UnityEngine.UI;
 
 public class IAPManager : MonoBehaviour, IStoreListener
 {
+    public static IAPManager instance;
+
     private static IStoreController m_StoreController;          // The Unity Purchasing system.
     private static IExtensionProvider m_StoreExtensionProvider; // The store-specific Purchasing subsystems.
     private static Product test_product = null;
@@ -30,6 +32,20 @@ public class IAPManager : MonoBehaviour, IStoreListener
     public static event PurchaseSuccessCallback OnCatPurchaseSuccess;
 
     public string catIDnumber;
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject); // Persist across scenes
+            InitializePurchasing();
+        }
+        else
+        {
+            Destroy(gameObject); // Prevent duplicates
+        }
+    }
 
     void Start()
     {
@@ -58,6 +74,7 @@ public class IAPManager : MonoBehaviour, IStoreListener
         for (int i = 0; i < 11; i++)
         {
             builder.AddProduct("cat" + i, ProductType.NonConsumable);
+            print("cat"+i);
         }
 
         // builder.AddProduct(SUB1, ProductType.Subscription);
@@ -103,6 +120,13 @@ public class IAPManager : MonoBehaviour, IStoreListener
     {
         buttonToUnLock.GetComponentsInChildren<Image>()[1].gameObject.SetActive(false);
         buttonToUnLock.GetComponentsInChildren<TMP_Text>()[0].gameObject.SetActive(false);
+        buttonToUnLock.onClick.RemoveAllListeners();
+    }
+    public void UnlockButtonSkinIAP(Button buttonToUnLock)
+    {
+        print("skin unlock called"+buttonToUnLock.GetComponentsInChildren<Image>().Length);
+        buttonToUnLock.GetComponent<CharacterBuyButton>().removePrice();
+        // buttonToUnLock.GetComponentsInChildren<TMP_Text>()[0].gameObject.SetActive(false);
         buttonToUnLock.onClick.RemoveAllListeners();
     }
 
@@ -202,6 +226,8 @@ public class IAPManager : MonoBehaviour, IStoreListener
         Product purchasedProduct = args.purchasedProduct;
         string purchasedProductId = purchasedProduct.definition.id;
 
+        print(purchasedProductId + catIDnumber+"Cats number");
+
         if (purchasedProductId == DASHBOARD)
         {
             Debug.Log($"Purchase successful: {purchasedProductId}");
@@ -227,11 +253,11 @@ public class IAPManager : MonoBehaviour, IStoreListener
         else if (purchasedProductId == catIDnumber)
         {
             Debug.Log($"Purchase successful: {purchasedProductId}");
-            // SavePurchaseToPlayFab(catIDnumber);
+            SavePurchaseToPlayFab(catIDnumber);
             DisplayProductMetadata(purchasedProduct);
             if (catBuyButton != null)
             {
-                UnlockButton(catBuyButton);
+                UnlockButtonSkinIAP(catBuyButton);
             }
             OnCatPurchaseSuccess?.Invoke();
         }
