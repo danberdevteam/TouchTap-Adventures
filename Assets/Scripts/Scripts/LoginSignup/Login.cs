@@ -74,7 +74,8 @@ public class Login : MonoBehaviour
             PlayerPrefs.SetString("DisplayName", displayName);
             PlayerPrefs.SetString("userEmail", email);
             PlayerPrefs.SetString("userToken", result.SessionTicket);
-            PlayerPrefs.Save();
+            PlayerPrefs.DeleteKey(keyValue);
+
 
             Debug.Log("Email stored: " + PlayerPrefs.GetString("userEmail"));  // Confirm storage immediately
         }
@@ -159,7 +160,8 @@ public class Login : MonoBehaviour
                     }
                 };
                 emailInputLogin.text = storedEmail;
-
+                PlayerPrefs.DeleteKey(keyValue);
+                PlayerPrefs.Save();
                 PlayFabClientAPI.LoginWithEmailAddress(request, OnLoginSuccess, OnErrorLogin);
             }
             else

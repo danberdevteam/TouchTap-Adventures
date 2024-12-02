@@ -74,7 +74,7 @@ public class IAPManager : MonoBehaviour, IStoreListener
         for (int i = 0; i < 11; i++)
         {
             builder.AddProduct("cat" + i, ProductType.NonConsumable);
-            print("cat"+i);
+            print("cat" + i);
         }
 
         // builder.AddProduct(SUB1, ProductType.Subscription);
@@ -118,13 +118,13 @@ public class IAPManager : MonoBehaviour, IStoreListener
 
     public void UnlockButton(Button buttonToUnLock)
     {
-        buttonToUnLock.GetComponentsInChildren<Image>()[1].gameObject.SetActive(false);
-        buttonToUnLock.GetComponentsInChildren<TMP_Text>()[0].gameObject.SetActive(false);
+        
+        buttonToUnLock.GetComponent<CharacterBuyButton>().removePrice();
         buttonToUnLock.onClick.RemoveAllListeners();
     }
     public void UnlockButtonSkinIAP(Button buttonToUnLock)
     {
-        print("skin unlock called"+buttonToUnLock.GetComponentsInChildren<Image>().Length);
+        print("skin unlock called" + buttonToUnLock.GetComponentsInChildren<Image>().Length);
         buttonToUnLock.GetComponent<CharacterBuyButton>().removePrice();
         // buttonToUnLock.GetComponentsInChildren<TMP_Text>()[0].gameObject.SetActive(false);
         buttonToUnLock.onClick.RemoveAllListeners();
@@ -226,7 +226,7 @@ public class IAPManager : MonoBehaviour, IStoreListener
         Product purchasedProduct = args.purchasedProduct;
         string purchasedProductId = purchasedProduct.definition.id;
 
-        print(purchasedProductId + catIDnumber+"Cats number");
+        print(purchasedProductId + catIDnumber + "Cats number");
 
         if (purchasedProductId == DASHBOARD)
         {

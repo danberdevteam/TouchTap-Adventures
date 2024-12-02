@@ -94,8 +94,7 @@ public class PurchaseManager : MonoBehaviour
 
     public void UnlockButton(Button buttonToUnLock)
     {
-        buttonToUnLock.GetComponentsInChildren<Image>()[1].gameObject.SetActive(false);
-        buttonToUnLock.GetComponentsInChildren<TMP_Text>()[0].gameObject.SetActive(false);
+          buttonToUnLock.GetComponent<CharacterBuyButton>().removePrice();
         buttonToUnLock.onClick.RemoveAllListeners();
     }
 
