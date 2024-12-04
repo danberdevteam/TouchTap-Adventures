@@ -436,7 +436,7 @@ MonoBehaviour:
   LeanEase: 0
   duration: 0
   durationOut: 0
-  pickupLimit: 10
+  pickupLimit: 30
 --- !u!143 &462026975
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1264,7 +1264,7 @@ MonoBehaviour:
   TimeElapsed: 0
   howOftenShouldObstacleSpawn: 4
   MiniGameNumber: 0
-  pickupLimit: 10
+  pickupLimit: 30
   tutorialManager: {fileID: 407363422}
 --- !u!4 &786963825
 Transform:
@@ -2247,7 +2247,7 @@ Transform:
   m_GameObject: {fileID: 1693428397}
   serializedVersion: 2
   m_LocalRotation: {x: 0.10551744, y: -0, z: -0, w: 0.9944175}
-  m_LocalPosition: {x: 0, y: 1.7, z: -1.59}
+  m_LocalPosition: {x: 0, y: 1.88, z: -2.45}
   m_LocalScale: {x: 1, y: 265.19522, z: 0.95596755}
   m_ConstrainProportionsScale: 0
   m_Children:

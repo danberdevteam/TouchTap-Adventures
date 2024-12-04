@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Text;
 using DG.Tweening;
 using UnityEngine;
@@ -139,54 +140,40 @@ public class TrackManager : MonoBehaviour
     //     }
     // }
 
-    public void SpawnConsumables(Transform pickUpTarget = null)
+  public void SpawnConsumables(Transform pickUpTarget = null)
+{
+    if (pickUpTarget == null) 
+        pickUpTarget = pickupPointsParent;
+
+    int pointCount = pickUpTarget.childCount;
+    if (pointCount < 1)
+        return;
+
+    // Calculate the number of pickups to spawn (clamped between 1 and 20)
+    int size = Mathf.Clamp(Mathf.RoundToInt(pointCount * pickupDensity), 1, 20);
+
+    // Generate a list of indices and shuffle it
+    List<int> randomIndices = Enumerable.Range(0, pointCount).OrderBy(x => Random.value).ToList();
+
+    // Spawn pickups at the shuffled indices
+    for (int i = 0; i < size; i++)
     {
-        // print("pickip");
-        if (pickUpTarget == null) pickUpTarget = pickupPointsParent;
+        int index = randomIndices[i];
+        Transform spawnPoint = pickUpTarget.GetChild(index);
 
-        int pointCount = pickUpTarget.childCount;
-
-        if (pointCount < 1)
-            return;
-
-        //pickupDensity = 0.5f;
-        int size = Mathf.RoundToInt(pointCount * pickupDensity);
-        // print("soze ="+size);
-
-        List<int> randomIndex = new List<int>();
-        StringBuilder randomList = new StringBuilder();
-        for (int j = 0; j < pointCount; j++)
+        // Ensure the item and game manager are valid
+        if (GameManager.Instance != null && GameManager.Instance.MiniGameNumber < PickupsList.Count)
         {
-            randomIndex.Add(j);
-        }
-        for (int i = pointCount - 1; i >= 0; i--)
-
-        {
-            int r = Random.Range(0, i + 1);
-
-            // Swap list[i] with the element at random index
-            int temp = randomIndex[i];
-            randomIndex[i] = randomIndex[r];
-            randomIndex[r] = temp;
-            randomList.Append(randomIndex[i] + "\t");
-        }
-        // print(randomList);
-
-        StringBuilder str = new StringBuilder();
-
-        size = Math.Clamp(size, 1, 20);
-        for (int i = 0; i < size; i++)
-        {
-            str.Append(randomIndex[i] + "\t");
-            int x = Random.Range(0, 100) % pickUpTarget.childCount;
-
-            Transform spot = pickUpTarget.GetChild(x);
-            Pickups item = Instantiate(PickupsList[GameManager.Instance.MiniGameNumber], spot);
+            Pickups item = Instantiate(PickupsList[GameManager.Instance.MiniGameNumber], spawnPoint);
             SetupPickup(item);
-            //item.transform.position = Vector3.zero;
         }
-        // print(str);
+        else
+        {
+            Debug.LogWarning("Invalid game manager or pickup list configuration.");
+        }
     }
+}
+
 
     [SerializeField] private int alphabetCount = 0;
     [SerializeField] private int shapeCount = 0;
