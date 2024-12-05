@@ -17,6 +17,7 @@ public class ChangeLetters : MonoBehaviour
     public MagneticScrollRect magneticScrollRect;
     public int NumberOfLettersDone = 0;
     [SerializeField] Text titleText;
+    [SerializeField] AlphabetGameManager gameManager;
 
     private enum E_Direction
     {
@@ -100,6 +101,7 @@ public class ChangeLetters : MonoBehaviour
         {
             titleText.text = "Well Done";
             // StartCoroutine(DelayEnd());
+            gameManager.EndGame();
             GameManager.Instance.EndGame("MainScene");
 
         }

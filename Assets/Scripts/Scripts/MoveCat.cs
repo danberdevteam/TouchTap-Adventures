@@ -230,7 +230,7 @@ public class MoveCat : MonoBehaviour
 
         // Assuming you have an Idle state, adjust as necessary
     }
-public int pickupLimit=10;
+public int pickupLimit=100;
     private void OnTriggerEnter(Collider other)
     {
         if (PickupCount == pickupLimit)
