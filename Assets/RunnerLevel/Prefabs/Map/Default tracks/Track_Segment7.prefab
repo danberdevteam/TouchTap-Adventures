@@ -136,37 +136,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!1 &1733344756103031801
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6350442521348883223}
-  m_Layer: 0
-  m_Name: PickupPos (4)
-  m_TagString: Untagged
-  m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &6350442521348883223
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1733344756103031801}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.4, y: 0.8333333, z: 0.75}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5002454203926512820}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2651108304439047180
 GameObject:
   m_ObjectHideFlags: 0
@@ -192,7 +161,7 @@ Transform:
   m_GameObject: {fileID: 2651108304439047180}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.4, y: 0.8333333, z: -0.359}
+  m_LocalPosition: {x: -0.4, y: 0.8333333, z: -0.305}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -223,7 +192,7 @@ Transform:
   m_GameObject: {fileID: 3099539024027345213}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.4, y: 0.8333333, z: -0.563}
+  m_LocalPosition: {x: -0.4, y: 0.8333333, z: -0.536}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -457,37 +426,6 @@ MonoBehaviour:
   disablePickups: 1
   obstacleSpawnParent: []
   spawnPoints: []
---- !u!1 &6012639009344964518
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5202870286803021087}
-  m_Layer: 0
-  m_Name: PickupPos (5)
-  m_TagString: Untagged
-  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &5202870286803021087
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6012639009344964518}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.8333333, z: 0.75}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5002454203926512820}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6259386846172913286
 GameObject:
   m_ObjectHideFlags: 0
@@ -519,42 +457,8 @@ Transform:
   m_Children:
   - {fileID: 1988302719780392835}
   - {fileID: 7797730278869217005}
-  - {fileID: 6350442521348883223}
-  - {fileID: 5202870286803021087}
-  - {fileID: 6767874580612161637}
   - {fileID: 3271104061837811089}
   m_Father: {fileID: 1385478660292960602}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &7135266243929829865
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6767874580612161637}
-  m_Layer: 0
-  m_Name: PickupPos (6)
-  m_TagString: Untagged
-  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &6767874580612161637
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7135266243929829865}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.4, y: 0.8333333, z: 0.75}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5002454203926512820}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1236847426028449083
 PrefabInstance:
@@ -716,6 +620,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1385478660292960602}
     m_Modifications:
+    - target: {fileID: 1094371939238436703, guid: e8392bb0919cb974495d3d604f18289e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -10.549998
+      objectReference: {fileID: 0}
+    - target: {fileID: 1678184587140930741, guid: e8392bb0919cb974495d3d604f18289e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -10.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 4343943334363833071, guid: e8392bb0919cb974495d3d604f18289e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -10.549998
+      objectReference: {fileID: 0}
     - target: {fileID: 4592842977224866479, guid: e8392bb0919cb974495d3d604f18289e, type: 3}
       propertyPath: m_Name
       value: ObstacleSpawnPoints1
