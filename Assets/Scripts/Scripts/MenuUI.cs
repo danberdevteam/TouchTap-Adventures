@@ -25,6 +25,7 @@ public class MenuUI : MonoBehaviour
 
     public void StartGame()
     {
+        // GameManager.Instance.TimeElapsed=0;
         SceneManager.LoadScene("MainScene");
     }
     public void LoadDashBoard()

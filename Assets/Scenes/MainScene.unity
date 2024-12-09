@@ -1264,7 +1264,7 @@ MonoBehaviour:
   TimeElapsed: 0
   howOftenShouldObstacleSpawn: 4
   MiniGameNumber: 0
-  pickupLimit: 100
+  pickupLimit: 50
   tutorialManager: {fileID: 407363422}
 --- !u!4 &786963825
 Transform:

@@ -169,23 +169,23 @@ public class SelectChar : MonoBehaviour
 
 			if (index < leftIndex)
 			{
-				transf.position = Vector3.Lerp(transf.position, markerLeft2.position, Time.deltaTime);
+				transf.position = Vector3.Lerp(transf.position, markerLeft2.position, 5*Time.deltaTime);
 			}
 			else if (index > rightIndex)
 			{
-				transf.position = Vector3.Lerp(transf.position, markerRight2.position, Time.deltaTime);
+				transf.position = Vector3.Lerp(transf.position, markerRight2.position, 5*Time.deltaTime);
 			}
 			else if (index == leftIndex)
 			{
-				transf.position = Vector3.Lerp(transf.position, markerLeft.position, Time.deltaTime);
+				transf.position = Vector3.Lerp(transf.position, markerLeft.position, 5*Time.deltaTime);
 			}
 			else if (index == middleIndex)
 			{
-				transf.position = Vector3.Lerp(transf.position, markerMiddle.position, Time.deltaTime);
+				transf.position = Vector3.Lerp(transf.position, markerMiddle.position, 5*Time.deltaTime);
 			}
 			else if (index == rightIndex)
 			{
-				transf.position = Vector3.Lerp(transf.position, markerRight.position, Time.deltaTime);
+				transf.position = Vector3.Lerp(transf.position, markerRight.position, 5*Time.deltaTime);
 			}
 		}
 	}

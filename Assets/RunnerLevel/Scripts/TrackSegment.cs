@@ -37,7 +37,7 @@ public class TrackSegment : MonoBehaviour
             i++;
         }
 
-        if (shouldGenerateObstacle % GameManager.Instance.howOftenShouldObstacleSpawn == 0)
+        if (GameManager.Instance.TimeElapsed > 1 && shouldGenerateObstacle % GameManager.Instance.howOftenShouldObstacleSpawn == 0)
         {
             // SpawnObstacles();
             disablePickups=false;
