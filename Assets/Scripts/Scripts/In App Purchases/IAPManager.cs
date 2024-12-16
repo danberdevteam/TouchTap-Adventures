@@ -98,27 +98,38 @@ public class IAPManager : MonoBehaviour, IStoreListener
     public void BuyDashboard(Button lockedButton)
     {
         dashboardButton = lockedButton; // Store the reference to the button
-        BuyProductID(DASHBOARD);
+
+        FindObjectOfType<ParentalGate>().ShowParentalGate(() =>
+    {
+        BuyProductID(DASHBOARD); // Proceed with purchase if access is granted
+    });
     }
 
     public void BuyLeaderboard(Button lockedButton)
     {
         print("Buy leaderboard function called");
         leaderboardButton = lockedButton; // Store the reference to the button
-        BuyProductID(LEADERBOARD);
+
+        FindObjectOfType<ParentalGate>().ShowParentalGate(() =>
+    {
+        BuyProductID(LEADERBOARD); // Proceed with purchase if access is granted
+    });
     }
 
     public void BuyCharacter(Button lockedButton, string catIDNum)
     {
         catBuyButton = lockedButton;
         catIDnumber = catIDNum;
-        BuyProductID(catIDNum);
 
+        FindObjectOfType<ParentalGate>().ShowParentalGate(() =>
+    {
+        BuyProductID(catIDNum); // Proceed with purchase if access is granted
+    });
     }
 
     public void UnlockButton(Button buttonToUnLock)
     {
-        
+
         buttonToUnLock.GetComponent<CharacterBuyButton>().removePrice();
         buttonToUnLock.onClick.RemoveAllListeners();
     }
@@ -158,6 +169,8 @@ public class IAPManager : MonoBehaviour, IStoreListener
     bool BuyProductID(string productId)
     {
         print("Product to be bought " + productId);
+
+
         if (IsInitialized())
         {
             Product product = m_StoreController.products.WithID(productId);
