@@ -11,7 +11,6 @@ public class ParentalGate : MonoBehaviour
 
     private int correctAnswer;
 
-    public bool buyGranted = false;
     private System.Action onGateSuccess; // Callback for when the gate is successfully passed
 
 
@@ -55,5 +54,11 @@ public class ParentalGate : MonoBehaviour
         onGateSuccess = successCallback;
         GenerateMathProblem();
         parentalGatePanel.SetActive(true); // Show the parental gate panel
+    }
+
+    public void CancelButtonClicked()
+    {
+        answerInputField.text = ""; // Clear input field
+        parentalGatePanel.SetActive(false);
     }
 }
