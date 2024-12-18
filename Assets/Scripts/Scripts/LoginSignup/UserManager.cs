@@ -76,5 +76,5 @@ public class UserManager : MonoBehaviour
             Debug.LogError($"Logout failed: {ex.Message}");
             onLogoutFailure?.Invoke(ex.Message);
         }
-    }
+    }   
 }

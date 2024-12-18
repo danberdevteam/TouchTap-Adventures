@@ -101,6 +101,7 @@ public class ParentalGate : MonoBehaviour
             if (int.TryParse(answerInputField.text, out int userAnswer) && userAnswer == correctAnswer)
             {
                 Debug.Log("Access Granted");
+                EnableOtherButtons(); // Re-enable other buttons
                 parentalGatePanel.SetActive(false); // Hide the parental gate
                 onAccessGranted?.Invoke(); // Execute the callback if access is granted
             }
