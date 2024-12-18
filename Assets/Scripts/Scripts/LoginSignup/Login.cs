@@ -6,11 +6,8 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using Lean.Gui;
 
-
 public class Login : MonoBehaviour
 {
-    // Start is called before the first frame update
-
     [Header("UI")]
     public TMP_Text messageText;
     public TMP_Text TitleID;
@@ -24,9 +21,9 @@ public class Login : MonoBehaviour
     public Button loginButton;
     public Button registerButton;
 
-
-    public void Start()
+    void Start()
     {
+        UserManager.IsLogoutTriggered = false; // Reset the logout trigger on app launch
         AttemptAutoLogin();
     }
 
@@ -50,23 +47,34 @@ public class Login : MonoBehaviour
         {
             Email = emailInputLogin.text,
             Password = "mail123",
-
             InfoRequestParameters = new GetPlayerCombinedInfoRequestParams
             {
-                GetPlayerProfile = true
+                GetPlayerProfile = true,
+                GetUserData = true // Request user data to check for deletion flag
             }
         };
 
         PlayFabClientAPI.LoginWithEmailAddress(request, OnLoginSuccess, OnErrorLogin);
-
     }
-    string keyValue = "gameNumber";
 
     void OnLoginSuccess(LoginResult result)
     {
+        // Check if the account is marked for deletion
+        if (result.InfoResultPayload.UserData != null &&
+            result.InfoResultPayload.UserData.ContainsKey("AccountMarkedForDeletion"))
+        {
+            Debug.Log("Account is marked for deletion. Preventing login.");
+            messageText.text = "Your account is marked for deletion. Contact support for more details.";
+            messageText.color = Color.black;
+
+            // Optionally log the user out
+            PlayFabClientAPI.ForgetAllCredentials();
+            return;
+        }
+
         Debug.Log("Successful login.");
         string displayName = result.InfoResultPayload.PlayerProfile.DisplayName;
-        string email = emailInputLogin.text;  // Capture the email from the input field
+        string email = emailInputLogin.text;
 
         if (!string.IsNullOrEmpty(email))
         {
@@ -74,64 +82,94 @@ public class Login : MonoBehaviour
             PlayerPrefs.SetString("DisplayName", displayName);
             PlayerPrefs.SetString("userEmail", email);
             PlayerPrefs.SetString("userToken", result.SessionTicket);
-            PlayerPrefs.DeleteKey(keyValue);
-
-
-            Debug.Log("Email stored: " + PlayerPrefs.GetString("userEmail"));  // Confirm storage immediately
-        }
-        else
-        {
-            Debug.LogError("Email input is empty. Cannot save to PlayerPrefs.");
         }
 
         UserManager.Instance.IsLoggedIn = true;
         UserManager.Instance.DisplayName = displayName;
 
-        SceneManager.LoadScene("MenuScene");  // Consider the impact of scene loading on data access
-        // LootLockerSDKManager.StartGoogleSession(result.PlayFabId, (response) =>
-        // {
-        //     if (response.success)
-        //     {
-        //         Debug.Log("LootLocker session started successfully." + "Player ID: " + response.player_id);
-        //     }
-        //     else
-        //     {
-        //         Debug.LogError("Failed to start LootLocker session: " + response.errorData);
-        //     }
-        // });
-
-
+        SceneManager.LoadScene("MenuScene");
     }
 
     void OnRegisterSuccess(RegisterPlayFabUserResult result)
     {
-        messageText.text = "Registered..\n" + "You can Login now.";
+        messageText.text = "Registered..\nYou can login now.";
         messageText.color = Color.green;
         registerPortal.SetActive(false);
-
     }
 
     void OnErrorLogin(PlayFabError error)
     {
-        print("Errror : " + error);
-        messageText.text = "Invalid parameters";
-        messageText.color = Color.red;
+        Debug.LogError($"Login Error: {error.GenerateErrorReport()}");
+
+        switch (error.Error)
+        {
+            case PlayFabErrorCode.InvalidEmailAddress:
+                messageText.text = "Invalid email address.";
+                break;
+            case PlayFabErrorCode.AccountNotFound:
+                messageText.text = "Account not found. Please register first.";
+                break;
+            case PlayFabErrorCode.InvalidPassword:
+                messageText.text = "Invalid password. Please try again.";
+                break;
+            case PlayFabErrorCode.EmailAddressNotAvailable:
+                messageText.text = "This email is already associated with an account.";
+                break;
+            default:
+                messageText.text = "Login failed. Please check your input.";
+                break;
+        }
+
+        messageText.color = Color.black;
         loginButton.GetComponent<LeanShake>().Shake(10);
     }
+
     void OnErrorRegister(PlayFabError error)
     {
-        messageRegisterText.text = "Invalid parameters";
-        messageText.color = Color.red;
+        Debug.LogError($"Register Error: {error.GenerateErrorReport()}");
+
+        // Extract the specific message from the error report
+        string errorMessage = ExtractErrorMessage(error.GenerateErrorReport());
+
+        switch (error.Error)
+        {
+            case PlayFabErrorCode.InvalidEmailAddress:
+                messageRegisterText.text = errorMessage;
+                break;
+            case PlayFabErrorCode.UsernameNotAvailable:
+                messageRegisterText.text = errorMessage;
+                break;
+            case PlayFabErrorCode.InvalidUsername:
+                messageRegisterText.text = errorMessage;
+                break;
+            case PlayFabErrorCode.InvalidPassword:
+                messageRegisterText.text = errorMessage;
+                break;
+            case PlayFabErrorCode.EmailAddressNotAvailable:
+                messageRegisterText.text = errorMessage;
+                break;
+            default:
+                messageRegisterText.text = errorMessage;
+                break;
+        }
+
+        messageRegisterText.color = Color.black;
         registerButton.GetComponent<LeanShake>().Shake(10);
     }
 
-
-
-
+    // Function to extract the specific error message
+    private string ExtractErrorMessage(string fullErrorReport)
+    {
+        int colonIndex = fullErrorReport.LastIndexOf(":");
+        if (colonIndex != -1 && colonIndex + 2 < fullErrorReport.Length)
+        {
+            return fullErrorReport.Substring(colonIndex + 2).Trim();
+        }
+        return fullErrorReport; // Fallback in case parsing fails
+    }
 
     public void SaveAuthToken(string token)
     {
-        print("AAAAAAA : " + token);
         PlayerPrefs.SetString("userToken", token);
         PlayerPrefs.Save();
     }
@@ -143,43 +181,35 @@ public class Login : MonoBehaviour
 
     private void AttemptAutoLogin()
     {
+        if (UserManager.IsLogoutTriggered)
+        {
+            Debug.Log("Auto-login skipped due to logout trigger.");
+            return;
+        }
+
         if (PlayerPrefs.HasKey("userEmail"))
         {
             string storedEmail = PlayerPrefs.GetString("userEmail");
-            Debug.Log("Attempting auto-login with stored email: " + storedEmail);
 
             if (!string.IsNullOrEmpty(storedEmail))
             {
                 var request = new LoginWithEmailAddressRequest
                 {
                     Email = storedEmail,
-                    Password = "mail123",  // Reminder to handle passwords securely
+                    Password = "mail123",
                     InfoRequestParameters = new GetPlayerCombinedInfoRequestParams
                     {
-                        GetPlayerProfile = true
+                        GetPlayerProfile = true,
+                        GetUserData = true
                     }
                 };
-                emailInputLogin.text = storedEmail;
-                PlayerPrefs.DeleteKey(keyValue);
-                PlayerPrefs.Save();
+
                 PlayFabClientAPI.LoginWithEmailAddress(request, OnLoginSuccess, OnErrorLogin);
-            }
-            else
-            {
-                Debug.LogError("Stored email is empty. Cannot proceed with auto-login.");
             }
         }
         else
         {
-            Debug.Log("No email stored in PlayerPrefs. Prompting manual login.");
+            Debug.Log("No stored credentials for auto-login.");
         }
     }
-
 }
-
-
-
-
-
-
-

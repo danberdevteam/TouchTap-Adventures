@@ -11,8 +11,8 @@ public class IAPManager : MonoBehaviour, IStoreListener
 {
     public static IAPManager instance;
 
-    private static IStoreController m_StoreController;          // The Unity Purchasing system.
-    private static IExtensionProvider m_StoreExtensionProvider; // The store-specific Purchasing subsystems.
+    private IStoreController storeController;
+    private IExtensionProvider storeExtensionProvider;
     private static Product test_product = null;
 
     public const string DASHBOARD = "menuitem1";
@@ -51,12 +51,13 @@ public class IAPManager : MonoBehaviour, IStoreListener
     {
 
         // If we haven't set up the Unity Purchasing reference
-        if (m_StoreController == null)
+        if (storeController == null)
         {
             // Begin to configure our connection to Purchasing
             InitializePurchasing();
         }
     }
+
     ConfigurationBuilder builder;
     public void InitializePurchasing()
     {
@@ -64,8 +65,6 @@ public class IAPManager : MonoBehaviour, IStoreListener
         {
             return;
         }
-
-
 
         builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
         builder.AddProduct(DASHBOARD, ProductType.NonConsumable);
@@ -91,7 +90,7 @@ public class IAPManager : MonoBehaviour, IStoreListener
     private bool IsInitialized()
     {
 
-        return m_StoreController != null && m_StoreExtensionProvider != null;
+        return storeController != null && storeExtensionProvider != null;
 
     }
 
@@ -99,7 +98,7 @@ public class IAPManager : MonoBehaviour, IStoreListener
     {
         dashboardButton = lockedButton; // Store the reference to the button
 
-        FindObjectOfType<ParentalGate>().ShowParentalGate(() =>
+        ParentalGate.Instance.ShowParentalGate(() =>
     {
         BuyProductID(DASHBOARD); // Proceed with purchase if access is granted
     });
@@ -110,7 +109,7 @@ public class IAPManager : MonoBehaviour, IStoreListener
         print("Buy leaderboard function called");
         leaderboardButton = lockedButton; // Store the reference to the button
 
-        FindObjectOfType<ParentalGate>().ShowParentalGate(() =>
+        ParentalGate.Instance.ShowParentalGate(() =>
     {
         BuyProductID(LEADERBOARD); // Proceed with purchase if access is granted
     });
@@ -121,7 +120,10 @@ public class IAPManager : MonoBehaviour, IStoreListener
         catBuyButton = lockedButton;
         catIDnumber = catIDNum;
 
-        FindObjectOfType<ParentalGate>().ShowParentalGate(() =>
+        // Reset the parental gate
+        ParentalGate.Instance.ResetParentalGate();
+
+        ParentalGate.Instance.ShowParentalGate(() =>
     {
         BuyProductID(catIDNum); // Proceed with purchase if access is granted
     });
@@ -152,7 +154,7 @@ public class IAPManager : MonoBehaviour, IStoreListener
             MyDebug("Cannot complete purchase, product not initialized.");
         else
         {
-            m_StoreController.ConfirmPendingPurchase(test_product);
+            storeController.ConfirmPendingPurchase(test_product);
             MyDebug("Completed purchase with " + test_product.transactionID.ToString());
         }
 
@@ -169,17 +171,15 @@ public class IAPManager : MonoBehaviour, IStoreListener
     bool BuyProductID(string productId)
     {
         print("Product to be bought " + productId);
-
-
         if (IsInitialized())
         {
-            Product product = m_StoreController.products.WithID(productId);
+            Product product = storeController.products.WithID(productId);
             print("product ID : " + product.transactionID);
 
             if (product != null && product.availableToPurchase)
             {
                 MyDebug(string.Format("Purchasing product:" + product.definition.id.ToString()));
-                m_StoreController.InitiatePurchase(product);
+                storeController.InitiatePurchase(product);
                 return true;
             }
             else
@@ -199,17 +199,17 @@ public class IAPManager : MonoBehaviour, IStoreListener
     {
         MyDebug("OnInitialized: PASS");
 
-        m_StoreController = controller;
-        m_StoreExtensionProvider = extensions;
+        storeController = controller;
+        storeExtensionProvider = extensions;
 
         CheckPurchasedItems();
     }
 
     private void CheckPurchasedItems()
     {
-        if (m_StoreController == null) return;
+        if (storeController == null) return;
 
-        foreach (var product in m_StoreController.products.all)
+        foreach (var product in storeController.products.all)
         {
             if (product.hasReceipt)
             {
@@ -316,6 +316,45 @@ public class IAPManager : MonoBehaviour, IStoreListener
     {
         throw new System.NotImplementedException();
     }
+
+    public void RestorePurchases()
+    {
+        if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.OSXPlayer)
+        {
+            if (storeExtensionProvider == null)
+            {
+                Debug.LogError("RestorePurchases failed: Unity IAP not initialized.");
+                return;
+            }
+
+            Debug.Log("Restore purchases started...");
+            storeExtensionProvider.GetExtension<IAppleExtensions>().RestoreTransactions((success, error) =>
+            {
+                if (success)
+                {
+                    Debug.Log("Restore Purchases completed successfully.");
+
+                    // Sync restored purchases with PlayFab
+                    foreach (var product in storeController.products.all)
+                    {
+                        if (product.hasReceipt)
+                        {
+                            SavePurchaseToPlayFab(product.definition.id);
+                        }
+                    }
+                }
+                else
+                {
+                    Debug.LogError($"Restore Purchases failed: {error}");
+                }
+            });
+        }
+        else
+        {
+            Debug.LogWarning("Restore Purchases is not available on this platform.");
+        }
+    }
+
 
     private void SavePurchaseToPlayFab(string productId)
     {

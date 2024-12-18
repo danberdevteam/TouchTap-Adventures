@@ -5,8 +5,11 @@ public class UserManager : MonoBehaviour
 {
     public static UserManager Instance;
 
-    public string DisplayName { get;  set; }
+    public string DisplayName { get; set; }
     public bool IsLoggedIn { get; set; }
+
+    public static bool IsLogoutTriggered = false;
+
 
     void Awake()
     {
@@ -44,4 +47,34 @@ public class UserManager : MonoBehaviour
     //     DisplayName = string.Empty;
     //     PlayFabId = string.Empty;
     // }
+
+    public void Logout(System.Action onLogoutSuccess, System.Action<string> onLogoutFailure)
+    {
+        try
+        {
+            // Clear PlayFab credentials (clear local session ticket and any cached data)
+            PlayFabClientAPI.ForgetAllCredentials();
+
+            // Optional: Clear cached user data
+            PlayerPrefs.DeleteKey("PlayFabUserId");
+            PlayerPrefs.DeleteKey("PlayFabSessionTicket");
+            PlayerPrefs.DeleteKey("userEmail");
+            PlayerPrefs.DeleteKey("userToken");
+
+            // Set logout trigger flag
+            IsLogoutTriggered = true;
+
+            // Reset user-specific data in your application
+            IsLoggedIn = false;
+            DisplayName = string.Empty;
+
+            Debug.Log("User logged out successfully!");
+            onLogoutSuccess?.Invoke();
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"Logout failed: {ex.Message}");
+            onLogoutFailure?.Invoke(ex.Message);
+        }
+    }
 }

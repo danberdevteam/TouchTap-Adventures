@@ -80,6 +80,9 @@ public class CharacterSceneManager : MonoBehaviour
 
     public void BackGame()
     {
+        // Reset the parental gate
+        ParentalGate.Instance.ResetParentalGate();
+
         SceneManager.LoadScene("MenuScene");
     }
 
