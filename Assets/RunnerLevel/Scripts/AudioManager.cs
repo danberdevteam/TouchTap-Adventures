@@ -3,137 +3,172 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 
 public class AudioManager : MonoBehaviour
 {
     private static AudioManager instance;
-    public static AudioManager Instance
-    {
-        get
-        {
-            return instance;
-        }
-    }
-    
+    public static AudioManager Instance => instance;
+
     [SerializeField] private AudioSource musicPlayer;
     [SerializeField] private AudioSource sfxPlayer;
-    [Space(15)]
-    [SerializeField] private AudioClip backgroundMusicClip;
-    
+
+    [SerializeField] private AudioClip mainSceneMusic;
+    [SerializeField] private AudioClip otherSceneMusic;
+
     [SerializeField] private AudioClip[] sfxSoundClips;
-    
-    private void Awake()
+
+    private float _volume = 1.0f;
+    public float Volume
     {
-        if (instance == null)
+        get => _volume;
+        set
         {
-            instance = this;
-            DontDestroyOnLoad(this.gameObject);
-        }
-        else
-        {
-            if (instance != this)
+            _volume = Mathf.Clamp01(value);
+
+            if (musicPlayer != null)
             {
-                Destroy(this.gameObject);
-            }
-        }
-    }
-
-    void Start()
-    {
-        SetMusicToggle(true);
-        SceneManager.sceneLoaded += SceneManagerOnsceneLoaded;
-    }
-
-    private void SceneManagerOnsceneLoaded(Scene scene, LoadSceneMode sceneMode)
-    {
-        SetMusicToggle(true);
-        
-    }
-
-    public void SettingToggleMusic(bool toggle)
-    {
-        if (toggle) //music on
-        {
-            PlayerPrefs.SetInt("musicToggle", 1);
-            
-        }
-        else //music off
-        {
-            PlayerPrefs.SetInt("musicToggle", 0);
-            
-        }
-        SetMusicToggle(toggle);
-    }
-    
-    public void SettingToggleSFX(bool toggle)
-    {
-        if (toggle) //music on
-        {
-            PlayerPrefs.SetInt("sfxToggle", 1);
-            
-        }
-        else //music off
-        {
-            PlayerPrefs.SetInt("sfxToggle", 0);
-            
-        }
-
-        if (sfxPlayer)
-        {
-            if (toggle == true)
-            {
-                sfxPlayer.mute = false;
+                musicPlayer.volume = _volume;
+                Debug.Log($"MusicPlayer volume set to {_volume}");
             }
             else
             {
-                sfxPlayer.mute = true;
+                Debug.LogError("MusicPlayer is null, cannot set volume.");
             }
+
+            if (sfxPlayer != null)
+            {
+                sfxPlayer.volume = _volume;
+                Debug.Log($"SfxPlayer volume set to {_volume}");
+            }
+            else
+            {
+                Debug.LogError("SfxPlayer is null, cannot set volume.");
+            }
+
+            PlayerPrefs.SetFloat(GameConstants.VolumeKey, _volume);
+            PlayerPrefs.Save();
+            Debug.Log($"Volume saved as {_volume}");
+        }
+    }
+
+    public void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this; // Set the singleton instance
+            DontDestroyOnLoad(gameObject); // Ensure it persists across scenes
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject); // Prevent duplicate instances
+        }
+
+        // Initialize volume from PlayerPrefs
+        _volume = PlayerPrefs.GetFloat(GameConstants.VolumeKey, 0.5f);
+
+        if (musicPlayer != null)
+            musicPlayer.volume = _volume;
+        if (sfxPlayer != null)
+            sfxPlayer.volume = _volume;
+
+        Debug.Log($"AudioManager initialized with volume {_volume}");
+    }
+
+    public void Start()
+    {
+        SceneManager.sceneLoaded += SceneManagerOnSceneLoaded;
+
+        // Explicitly set volume
+        Volume = PlayerPrefs.GetFloat(GameConstants.VolumeKey, 0.5f);
+
+        UpdateBackgroundMusic();
+    }
+
+    private void SceneManagerOnSceneLoaded(Scene scene, LoadSceneMode sceneMode)
+    {
+        UpdateBackgroundMusic();
+    }
+
+    private void UpdateBackgroundMusic()
+    {
+        // Check the active scene name and decide the music to play
+        if (SceneManager.GetActiveScene().name == "MainScene")
+        {
+            // Play the specific clip for MainScene
+            PlayMusic(mainSceneMusic);
+        }
+        else
+        {
+            // Play the other scene music
+            PlayMusic(otherSceneMusic);
         }
     }
 
     public void SetMusicToggle(bool toggle)
     {
-        if (backgroundMusicClip != null)
-        {
-            musicPlayer.loop = true;
-        }
-        else
-        {
+        if (musicPlayer == null)
             return;
-        }
 
-        if (toggle == true)
+        musicPlayer.loop = true;
+
+        if (toggle)
         {
-            musicPlayer.clip = backgroundMusicClip;
-            musicPlayer.Play();
+            if (!musicPlayer.isPlaying)
+            {
+                musicPlayer.Play();
+            }
         }
         else
         {
-            musicPlayer.Stop();
+            musicPlayer.Pause();
         }
     }
 
-    public void SetMusicPlayback(AudioClip audioClip)
+    public void SetVolume(float volume)
     {
-        if (musicPlayer == null && audioClip == null)    return;
+        Volume = volume;
+    }
+
+    public void SettingToggleMusic(bool toggle)
+    {
+        PlayerPrefs.SetInt("musicToggle", toggle ? 1 : 0);
+        SetMusicToggle(toggle);
+    }
+
+    public void SettingToggleSFX(bool toggle)
+    {
+        PlayerPrefs.SetInt("sfxToggle", toggle ? 1 : 0);
+        if (sfxPlayer)
+        {
+            sfxPlayer.mute = !toggle;
+        }
+    }
+
+    public void PlayMusic(AudioClip audioClip)
+    {
+        if (musicPlayer == null || audioClip == null) return;
+
         musicPlayer.Stop();
         musicPlayer.clip = audioClip;
+        musicPlayer.loop = true;
         musicPlayer.Play();
     }
-    
-    private void PlaySound(int idx)
+
+    public void PlaySound(int idx)
     {
         try
         {
-            sfxPlayer.PlayOneShot(sfxSoundClips[idx]);
+            if (sfxSoundClips != null && idx >= 0 && idx < sfxSoundClips.Length)
+            {
+                sfxPlayer.PlayOneShot(sfxSoundClips[idx]);
+            }
         }
         catch (Exception e)
         {
-            UnityEngine.Debug.LogWarning(e.Message);
+            Debug.LogWarning($"Error playing SFX: {e.Message}");
         }
     }
-    
+
     public void PlaySound(AudioClip audioClip)
     {
         try
@@ -142,10 +177,10 @@ public class AudioManager : MonoBehaviour
         }
         catch (Exception e)
         {
-            UnityEngine.Debug.LogWarning(e.Message);
+            Debug.LogWarning(e.Message);
         }
     }
-    
+
     public void JumpSound()
     {
         PlaySound(1);
@@ -162,8 +197,33 @@ public class AudioManager : MonoBehaviour
         SetMusicToggle(true);
     }
 
-    public static implicit operator AudioManager(Audio_Manager v)
+    public void MuteSFX(bool mute)
     {
-        throw new NotImplementedException();
+        if (sfxPlayer != null)
+        {
+            sfxPlayer.mute = mute;
+        }
+    }
+
+    public void SetMusicVolume(float volume)
+    {
+        if (musicPlayer != null)
+        {
+            musicPlayer.volume = Mathf.Clamp01(volume); // Clamp volume between 0 and 1
+        }
+    }
+
+    public float GetMusicVolume()
+    {
+        return musicPlayer != null ? musicPlayer.volume : 0;
+    }
+
+    public void SetMusicPlayback(AudioClip audioClip)
+    {
+        if (musicPlayer == null || audioClip == null) return;
+
+        musicPlayer.Stop();
+        musicPlayer.clip = audioClip;
+        musicPlayer.Play();
     }
 }

@@ -13,6 +13,13 @@ public class UserManager : MonoBehaviour
 
     void Awake()
     {
+        // Enable/disable logging based on build target
+#if UNITY_EDITOR
+        Debug.unityLogger.logEnabled = true;
+#else
+    Debug.unityLogger.logEnabled = false;
+#endif
+
         if (Instance == null)
         {
             Instance = this;
@@ -50,6 +57,7 @@ public class UserManager : MonoBehaviour
 
     public void Logout(System.Action onLogoutSuccess, System.Action<string> onLogoutFailure)
     {
+        IAPManager.instance.ClearRestoreMessage();
         try
         {
             // Clear PlayFab credentials (clear local session ticket and any cached data)
@@ -76,5 +84,5 @@ public class UserManager : MonoBehaviour
             Debug.LogError($"Logout failed: {ex.Message}");
             onLogoutFailure?.Invoke(ex.Message);
         }
-    }   
+    }
 }

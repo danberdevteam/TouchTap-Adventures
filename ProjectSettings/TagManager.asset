@@ -9,6 +9,8 @@ TagManager:
   - Fill
   - Number
   - Obstacle
+  - VolumeSlider
+  - ControlsPanel
   layers:
   - Default
   - TransparentFX

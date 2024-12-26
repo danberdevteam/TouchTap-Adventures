@@ -80,12 +80,13 @@ public class ParentalGate : MonoBehaviour
             Debug.Log("Access Granted");
             parentalGatePanel.SetActive(false); // Hide the parental gate
             EnableOtherButtons(); // Re-enable other buttons
+            ResetParentalGate();
             // Proceed to the restricted content
         }
         else
         {
             Debug.Log("Access Denied");
-            answerInputField.text = ""; // Clear the input field
+            ResetParentalGate();
         }
     }
 
@@ -101,6 +102,7 @@ public class ParentalGate : MonoBehaviour
             if (int.TryParse(answerInputField.text, out int userAnswer) && userAnswer == correctAnswer)
             {
                 Debug.Log("Access Granted");
+                ResetParentalGate();
                 EnableOtherButtons(); // Re-enable other buttons
                 parentalGatePanel.SetActive(false); // Hide the parental gate
                 onAccessGranted?.Invoke(); // Execute the callback if access is granted
@@ -108,7 +110,7 @@ public class ParentalGate : MonoBehaviour
             else
             {
                 Debug.Log("Access Denied");
-                answerInputField.text = ""; // Clear the input field
+                ResetParentalGate();
             }
         });
 
@@ -121,6 +123,7 @@ public class ParentalGate : MonoBehaviour
     {
         Debug.Log("Parental Gate Cancelled");
         parentalGatePanel.SetActive(false); // Hide the parental gate panel
+        ResetParentalGate();
         EnableOtherButtons(); // Re-enable other buttons
     }
 

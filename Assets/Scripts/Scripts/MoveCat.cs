@@ -276,6 +276,7 @@ public int pickupLimit=100;
     {
         //  DOTween.Clear(true);
         GameManager.Instance.TimeElapsed = 0;
+        Time.timeScale = 1;
         SceneManager.LoadScene("MenuScene");
         // GameManager.Instance.EndGame("MenuScene");
     }

@@ -105,8 +105,4 @@ public class GameManager : MonoBehaviour
     {
         pickupLimit=1000000;
     }
-
-
-
-
 }

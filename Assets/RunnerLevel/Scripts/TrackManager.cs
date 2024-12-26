@@ -306,7 +306,8 @@ public class TrackManager : MonoBehaviour
         catController.animator.SetTrigger("Idle");
         // var ballAnim = FindObjectOfType<BallController>();
         // ballAnim.GameFinish();
-        AudioManager.Instance?.SetMusicPlayback(trackEndMusic);
+        AudioManager.Instance.SetMusicPlayback(trackEndMusic);
+
     }
 
     #region Skybox transitions

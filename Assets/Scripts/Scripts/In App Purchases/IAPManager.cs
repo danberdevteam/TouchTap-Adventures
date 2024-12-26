@@ -14,9 +14,10 @@ public class IAPManager : MonoBehaviour, IStoreListener
     private IStoreController storeController;
     private IExtensionProvider storeExtensionProvider;
     private static Product test_product = null;
+    [SerializeField] private TextMeshProUGUI restoreMessageText;
 
-    public const string DASHBOARD = "menuitem1";
-    public const string LEADERBOARD = "menuitem2";
+    public const string DASHBOARD = "dashboard";
+    public const string LEADERBOARD = "leaderboard";
     public static string SUB1 = "subscription1";
 
     private static TMP_Text myText;
@@ -72,8 +73,8 @@ public class IAPManager : MonoBehaviour, IStoreListener
 
         for (int i = 0; i < 11; i++)
         {
-            builder.AddProduct("cat" + i, ProductType.NonConsumable);
-            print("cat" + i);
+            builder.AddProduct("skin" + i, ProductType.NonConsumable);
+            print("skin" + i);
         }
 
         // builder.AddProduct(SUB1, ProductType.Subscription);
@@ -319,42 +320,141 @@ public class IAPManager : MonoBehaviour, IStoreListener
 
     public void RestorePurchases()
     {
-        if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.OSXPlayer)
+        if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.OSXPlayer || Application.isEditor)
         {
-            if (storeExtensionProvider == null)
+            if (storeExtensionProvider == null && !Application.isEditor)
             {
+                SaveRestoreMessage("RestorePurchases failed: Unity IAP not initialized.");
                 Debug.LogError("RestorePurchases failed: Unity IAP not initialized.");
                 return;
             }
 
+            // Check if there are previous purchases
+            bool hasPurchases = false;
+            foreach (var product in storeController.products.all)
+            {
+                if (product.hasReceipt)
+                {
+                    hasPurchases = true;
+                    break;
+                }
+            }
+
+            if (!hasPurchases)
+            {
+                string warning = "No previous purchases found. Restore not needed.";
+                SaveRestoreMessage(warning);
+                DisplayRestoreMessage(restoreMessageText);
+                Debug.LogWarning(warning);
+                return;
+            }
+
             Debug.Log("Restore purchases started...");
+            SaveRestoreMessage("Restore purchases in progress...");
+
+            if (Application.isEditor)
+            {
+                // Simulate successful restore in the editor
+                StartCoroutine(SimulateEditorRestore());
+                return;
+            }
+
             storeExtensionProvider.GetExtension<IAppleExtensions>().RestoreTransactions((success, error) =>
             {
                 if (success)
                 {
                     Debug.Log("Restore Purchases completed successfully.");
+                    SaveRestoreMessage("Restore Purchases completed successfully.");
+                    DisplayRestoreMessage(restoreMessageText);
 
-                    // Sync restored purchases with PlayFab
+                    // Sync restored purchases with the current logged-in user
                     foreach (var product in storeController.products.all)
                     {
                         if (product.hasReceipt)
                         {
-                            SavePurchaseToPlayFab(product.definition.id);
+                            ValidateAndRestoreProduct(product);
+                        }
+                        else
+                        {
+                            Debug.Log($"Product not purchased or no receipt: {product.definition.id}");
                         }
                     }
                 }
                 else
                 {
                     Debug.LogError($"Restore Purchases failed: {error}");
+                    SaveRestoreMessage($"Restore Purchases failed: {error}");
+                    DisplayRestoreMessage(restoreMessageText);
                 }
             });
         }
         else
         {
-            Debug.LogWarning("Restore Purchases is not available on this platform.");
+            string warning = "Restore Purchases is not available on this platform.";
+            SaveRestoreMessage(warning);
+            DisplayRestoreMessage(restoreMessageText);
+            Debug.LogWarning(warning);
         }
     }
 
+
+    private void ValidateAndRestoreProduct(Product product)
+    {
+        string productId = product.definition.id;
+
+        // Retrieve the current logged-in user's data
+        PlayFabClientAPI.GetUserData(new PlayFab.ClientModels.GetUserDataRequest(),
+        result =>
+        {
+            if (result.Data != null && result.Data.ContainsKey(productId))
+            {
+                Debug.Log($"Restoring product for the current user: {productId}");
+                SavePurchaseToPlayFab(productId); // Sync with PlayFab or local storage
+            }
+            else
+            {
+                Debug.LogWarning($"Product {productId} is not associated with the current logged-in user. Skipping restoration.");
+            }
+        },
+        error =>
+        {
+            Debug.LogError($"Failed to validate user data for product {productId}: {error.ErrorMessage}");
+        });
+    }
+
+
+    // Simulate Restore Purchases in the Unity Editor
+    private IEnumerator SimulateEditorRestore()
+    {
+        yield return new WaitForSeconds(2); // Simulate processing delay
+        Debug.Log("Simulated Restore Purchases completed successfully.");
+        SaveRestoreMessage("Simulated Restore Purchases completed successfully.");
+        DisplayRestoreMessage(restoreMessageText);
+    }
+
+
+    // Save the restore message in PlayerPrefs
+    private void SaveRestoreMessage(string message)
+    {
+        PlayerPrefs.SetString("RestoreMessage", message);
+        PlayerPrefs.Save();
+    }
+
+    // Retrieve and display the restore message
+    public void DisplayRestoreMessage(TextMeshProUGUI restoreMessageText)
+    {
+        if (PlayerPrefs.HasKey("RestoreMessage"))
+        {
+            string message = PlayerPrefs.GetString("RestoreMessage");
+            restoreMessageText.text = message;
+            Debug.Log("Displayed Restore Message: " + message);
+        }
+        else
+        {
+            restoreMessageText.text = "No restore messages available.";
+            Debug.Log("No restore messages found.");
+        }
+    }
 
     private void SavePurchaseToPlayFab(string productId)
     {
@@ -371,18 +471,13 @@ public class IAPManager : MonoBehaviour, IStoreListener
         error => Debug.LogError($"Failed to save purchase state to PlayFab: {error.ErrorMessage}"));
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public void ClearRestoreMessage()
+    {
+        if (restoreMessageText != null)
+        {
+            restoreMessageText.text = string.Empty;
+            Debug.Log("Restore message cleared.");
+        }
+    }
 
 }

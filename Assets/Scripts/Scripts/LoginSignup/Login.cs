@@ -25,6 +25,24 @@ public class Login : MonoBehaviour
     {
         UserManager.IsLogoutTriggered = false; // Reset the logout trigger on app launch
         AttemptAutoLogin();
+
+        // Add listeners to clear message text when input fields are modified
+        emailInputLogin.onValueChanged.AddListener(delegate { ClearMessageText(); });
+        usernameInputLogin.onValueChanged.AddListener(delegate { ClearMessageText(); });
+        emailInputRegister.onValueChanged.AddListener(delegate { ClearMessageRegisterText(); });
+        nameInput.onValueChanged.AddListener(delegate { ClearMessageRegisterText(); });
+    }
+
+    private void ClearMessageText()
+    {
+        messageText.text = string.Empty;
+        messageText.color = Color.black; // Reset to default color if needed
+    }
+
+    private void ClearMessageRegisterText()
+    {
+        messageRegisterText.text = string.Empty;
+        messageRegisterText.color = Color.black; // Reset to default color if needed
     }
 
     public void RegisterButton()
@@ -94,8 +112,19 @@ public class Login : MonoBehaviour
     {
         messageText.text = "Registered..\nYou can login now.";
         messageText.color = Color.green;
+
+        // Clear the login fields
+        emailInputLogin.text = string.Empty;
+        usernameInputLogin.text = string.Empty;
+
+        // Clear the registration fields
+        emailInputRegister.text = string.Empty;
+        nameInput.text = string.Empty;
+
+        // Hide the registration portal
         registerPortal.SetActive(false);
     }
+
 
     void OnErrorLogin(PlayFabError error)
     {
